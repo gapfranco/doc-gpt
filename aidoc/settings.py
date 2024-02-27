@@ -140,3 +140,5 @@ MEDIA_URL = "/media/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "core.User"
+
+QDRANT_PATH = os.path.join(BASE_DIR, os.environ.get("QDRANT_PATH", "local_qdrant"))

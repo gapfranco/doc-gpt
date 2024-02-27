@@ -1,0 +1,49 @@
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore local development settings
+settings/local.py
+
+# Ignore the virtual environment
+.venv/
+.env/
+.ruff_cache/
+
+# Ignore the staticfiles directory
+staticfiles/
+static/
+
+# Ignore media files
+media/
+
+# Ignore database files
+db.sqlite3
+
+# Ignore logs
+logs/
+
+# Ignore temporary files
+*.swp
+*.swo
+*.log
+*.pid
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore deployment-specific files
+*.env
+*.config
+
+# Ignore sensitive or private information (update as needed)
+*.secret
+
+# Ignore backup files
+*.bak
+*.backup
+
+node_modules/
+
+local_qdrant/

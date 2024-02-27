@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "ai-doc"
+version = "0.1.0"
+description = ""
+authors = ["Gonçalo Franco <gapfranco@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ai_doc"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^4.2"
+djangorestframework = "^3.14.0"
+whitenoise = "^6.6.0"
+python-dotenv = "^1.0.1"
+requests = "^2.31.0"
+gunicorn = "^21.2.0"
+dj-database-url = "^2.1.0"
+psycopg2-binary = "^2.9.9"
+pillow = "^10.2.0"
+openai = "^1.12.0"
+langchain = "^0.1.9"
+pypdf2 = "^3.0.1"
+qdrant-client = "^1.7.3"
+tiktoken = "^0.6.0"
+langchain-openai = "^0.0.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

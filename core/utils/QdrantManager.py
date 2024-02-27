@@ -14,13 +14,17 @@ class QdrantManager(ABC):
         self.col_name = col_name
 
     @abstractmethod
-    def get_qdrant(self) -> Qdrant:
+    def get_collection(self) -> Qdrant:
+        pass
+
+    @abstractmethod
+    def delete_collection(self) -> None:
         pass
 
 
 class QdrantManagerLocal(QdrantManager):
 
-    def get_qdrant(self) -> Qdrant:
+    def get_collection(self) -> Qdrant:
         client = QdrantClient(path=settings.QDRANT_PATH)
         collections = client.get_collections().collections
         collection_names = [collection.name for collection in collections]
@@ -31,31 +35,12 @@ class QdrantManagerLocal(QdrantManager):
                 collection_name=self.col_name,
                 vectors_config=VectorParams(size=1536, distance=Distance.COSINE),
             )
-
         return Qdrant(
             client=client,
             collection_name=self.col_name,
             embeddings=OpenAIEmbeddings()
         )
 
-
-# def load_qdrant(col_name):
-#     client = QdrantClient(path=settings.QDRANT_PATH)
-#
-#     # Get all collection names.
-#     collections = client.get_collections().collections
-#     collection_names = [collection.name for collection in collections]
-#
-#     # If the collection does not exist, create it.
-#     if col_name not in collection_names:
-#         client.create_collection(
-#             collection_name=col_name,
-#             vectors_config=VectorParams(size=1536, distance=Distance.COSINE),
-#         )
-#
-#     return Qdrant(
-#         client=client,
-#         collection_name=col_name,
-#         embeddings=OpenAIEmbeddings()
-#     )
-
+    def delete_collection(self) -> None:
+        client = QdrantClient(path=settings.QDRANT_PATH)
+        client.delete_collection(self.col_name)

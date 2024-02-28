@@ -1,0 +1,23 @@
+meta {
+  name: Query
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8000/api/query/
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "topic_id": 5,
+    "query": "Do que se trata os documentos"
+  }
+}

@@ -142,3 +142,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "core.User"
 
 QDRANT_PATH = os.path.join(BASE_DIR, os.environ.get("QDRANT_PATH", "local_qdrant"))
+LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-3.5-turbo")

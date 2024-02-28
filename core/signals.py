@@ -1,6 +1,8 @@
 from django.contrib.gis.db import models
 from django.db.models.signals import post_save, pre_delete, pre_save
 from django.dispatch import receiver
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from core.utils.text_extractor import extract_text
 
 from core.utils.QdrantManager import QdrantManagerLocal
 
@@ -61,9 +63,26 @@ def post_insert_document(
         post_insert_document, sender=sender
     )
 
-    # Cria qdrant database
+    # Qdrant database
     qdrant = QdrantManagerLocal(str(instance.topic.collection_id))
     db = qdrant.get_collection()
+
+    if instance.file:
+        text = extract_text(instance.file)
+        if text:
+            text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+                model_name="text-embedding-ada-002",
+                # The appropriate chunk size needs to be adjusted based
+                # on the PDF being queried.
+                # If it's too large, it may not be able to reference information from
+                # various parts during question answering.
+                # On the other hand, if it's too small, one chunk may not contain
+                # enough contextual information.
+                chunk_size=500,
+                chunk_overlap=0,
+            )
+            lin_text = text_splitter.split_text(text)
+            db.add_texts(lin_text)
 
     models.signals.post_save.connect(
         post_insert_document, sender=sender

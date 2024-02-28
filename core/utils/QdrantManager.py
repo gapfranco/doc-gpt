@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from langchain.chains import RetrievalQA
+
 from aidoc import settings
 
 from qdrant_client import QdrantClient

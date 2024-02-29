@@ -1,14 +1,13 @@
 import uuid
 
-from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
-    Group,
     PermissionsMixin,
 )
+from django.db import models
+
 # from django.contrib.gis.db import models
-from django.core.exceptions import ValidationError
 
 
 class UserManager(BaseUserManager):
@@ -49,6 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Topic(models.Model):
     """Topic models"""
+
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -59,14 +59,16 @@ class Topic(models.Model):
 
 class Document(models.Model):
     """Document model"""
+
     name = models.CharField(max_length=255)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    file = models.FileField(upload_to='media/')
+    file = models.FileField(upload_to="media/")
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Question(models.Model):
     """Question model"""
+
     text = models.CharField(max_length=255)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     answer = models.TextField(null=True, blank=True)

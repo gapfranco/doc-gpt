@@ -1,17 +1,14 @@
 from abc import ABC, abstractmethod
 
-from langchain.chains import RetrievalQA
+from langchain_community.vectorstores import Qdrant
+from langchain_openai import OpenAIEmbeddings
+from qdrant_client import QdrantClient
+from qdrant_client.models import Distance, VectorParams
 
 from aidoc import settings
 
-from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams
-from langchain_community.vectorstores import Qdrant
-from langchain_openai import OpenAIEmbeddings
-
 
 class QdrantManager(ABC):
-
     def __init__(self, col_name: str):
         self.col_name = col_name
 
@@ -25,7 +22,6 @@ class QdrantManager(ABC):
 
 
 class QdrantManagerLocal(QdrantManager):
-
     def get_collection(self) -> Qdrant:
         client = QdrantClient(path=settings.QDRANT_PATH)
         collections = client.get_collections().collections
@@ -35,12 +31,14 @@ class QdrantManagerLocal(QdrantManager):
         if self.col_name not in collection_names:
             client.create_collection(
                 collection_name=self.col_name,
-                vectors_config=VectorParams(size=1536, distance=Distance.COSINE),
+                vectors_config=VectorParams(
+                    size=1536, distance=Distance.COSINE
+                ),
             )
         return Qdrant(
             client=client,
             collection_name=self.col_name,
-            embeddings=OpenAIEmbeddings()
+            embeddings=OpenAIEmbeddings(),
         )
 
     def delete_collection(self) -> None:

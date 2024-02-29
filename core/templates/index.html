@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="mx-auto min-h-screen bg-slate-50 border-x-gray-200 py-10 px-4 sm:px-6 lg:px-8 xl:border-x dark:bg-gray-800 dark:border-x-gray-700">
+
+  <!-- Page Heading -->
+  <header class="max-w-3xl">
+    <p class="mb-2 text-sm font-semibold text-blue-600">{{ request.user.email }} ({{ request.user.name }})</p>
+    <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">Sistema ERP Hover/WEB</h1>
+    <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">Protótipo do sistema para o ERP Hover</p>
+  </header>
+  <!-- End Page Heading -->
+
+</div>
+
+{% endblock %}

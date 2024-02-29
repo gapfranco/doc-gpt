@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.serializers.query_serializers import QuerySerializer
-
 from core.models import Topic
 from core.utils.QueryManager import QueryManager
 

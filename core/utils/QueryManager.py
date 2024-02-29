@@ -1,13 +1,12 @@
-from aidoc import settings
-
-from core.utils.QdrantManager import QdrantManagerLocal
 from langchain.chains import RetrievalQA
-from langchain_openai import ChatOpenAI
 from langchain_community.callbacks import get_openai_callback
+from langchain_openai import ChatOpenAI
+
+from aidoc import settings
+from core.utils.QdrantManager import QdrantManagerLocal
 
 
 class QueryManager:
-
     def __init__(self, collection_id: str):
         self.collection_id = collection_id
         model_name = settings.LLM_MODEL
@@ -20,14 +19,14 @@ class QueryManager:
             # There are also "mmr," "similarity_score_threshold," and others.
             search_type="similarity",
             # How many documents to retrieve? (default: 4)
-            search_kwargs={"k": 10}
+            search_kwargs={"k": 10},
         )
         return RetrievalQA.from_chain_type(
             llm=self.llm,
             chain_type="stuff",
             retriever=retriever,
             return_source_documents=True,
-            verbose=True
+            verbose=True,
         )
 
     def question(self, query):

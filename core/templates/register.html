@@ -1,0 +1,88 @@
+{% extends 'start.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+
+    <main class="w-full max-w-2xl mx-auto p-6">
+        <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-4 sm:p-7">
+                <div class="text-center">
+                    <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Registro</h1>
+                </div>
+
+            <div class="mt-5">
+
+            <!-- Form -->
+            <form method="post">
+                {% csrf_token %}
+                {% for error in form.non_field_errors %}
+                    <p class="text-sm text-red-600 mt-2 mb-2">{{error}}</p>
+                {% endfor %}
+                <div class="grid gap-y-4">
+                <!-- Form Group -->
+                <div>
+                  <label for="email" class="block text-sm mb-2 dark:text-white">Email</label>
+                  <div class="relative">
+                    <input type="email" id="email" name="email" value="{{ form.data.email }}" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="email-error">
+                  </div>
+                    {% for error in form.errors.email %}
+                        <p class="text-sm text-red-600 mt-2 mb-2">{{error}}</p>
+                    {% endfor %}
+                </div>
+                <!-- End Form Group -->
+
+                <!-- Form Group -->
+                <div>
+                  <label for="name" class="block text-sm mb-2 dark:text-white">Nome</label>
+                  <div class="relative">
+                    <input type="text" id="name" name="name" value="{{ form.data.name }}" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="name-error">
+                  </div>
+                  <p class="hidden text-xs text-red-600 mt-2" id="name-error">Informe um nome</p>
+                </div>
+                <!-- End Form Group -->
+
+                <!-- Form Group -->
+                <div>
+                  <div class="flex justify-between items-center">
+                    <label for="password" class="block text-sm mb-2 dark:text-white">Senha</label>
+                  </div>
+                  <div class="relative">
+                    <input type="password" id="password" name="password" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="password-error">
+                  </div>
+                {% for error in form.errors.password %}
+                    <p class="text-sm text-red-600 mt-2 mb-2">{{error}}</p>
+                {% endfor %}
+                </div>
+                <!-- End Form Group -->
+
+                <!-- Form Group -->
+                <div>
+                  <div class="flex justify-between items-center">
+                    <label for="password2" class="block text-sm mb-2 dark:text-white">Confirmar senha</label>
+                  </div>
+                  <div class="relative">
+                    <input type="password" id="password2" name="password2" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="password-error">
+                  </div>
+                {% for error in form.errors.password2 %}
+                    <p class="text-sm text-red-600 mt-2 mb-2">{{error}}</p>
+                {% endfor %}
+                </div>
+                <!-- End Form Group -->
+
+                <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center
+                    gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600
+                    text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
+                    dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                    Registrar-se
+                </button>
+
+                </div>
+            </form>
+            <!-- End Form -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+  {% endblock %}

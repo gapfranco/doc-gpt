@@ -1,3 +1,4 @@
+import os
 import uuid
 
 from django.contrib.auth.models import (
@@ -64,6 +65,12 @@ class Document(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     file = models.FileField(upload_to="media/")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id"]
+
+    def base_name(self):
+        return os.path.basename(self.file.name)
 
 
 class Question(models.Model):

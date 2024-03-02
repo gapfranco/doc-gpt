@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@preline/tabs": "^2.0.2",
     "preline": "^2.0.3"
   }
 }

@@ -4,13 +4,57 @@
 
 <div class="mx-auto min-h-screen bg-slate-50 border-x-gray-200 py-10 px-4 sm:px-6 lg:px-8 xl:border-x dark:bg-gray-800 dark:border-x-gray-700">
 
-  <!-- Page Heading -->
-  <header class="max-w-3xl">
-    <p class="mb-2 text-sm font-semibold text-blue-600">{{ request.user.email }} ({{ request.user.name }})</p>
-    <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">Sistema ERP Hover/WEB</h1>
-    <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">Protótipo do sistema para o ERP Hover</p>
-  </header>
-  <!-- End Page Heading -->
+  <!-- Card Section -->
+<div class="max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+  <!-- Grid -->
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+    <!-- Card -->
+    <a class="group flex flex-col bg-amber-50 border shadow-sm rounded-xl hover:shadow-md transition dark:bg-slate-900 dark:border-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="new_topic">
+      <div class="p-4 md:p-5">
+        <div class="flex">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4.0" stroke="currentColor" class="w-6 h-6 text-blue-600">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <div class="grow ms-5">
+            <h3 class="group-hover:text-blue-600 font-semibold text-gray-800 dark:group-hover:text-gray-400 dark:text-gray-200">
+              Adicione um novo tópico
+            </h3>
+            <p class="text-sm text-gray-500">
+              Pode adicionat quantos tópicos quiser
+            </p>
+            </div>
+        </div>
+      </div>
+    </a>
+    <!-- End Card -->
+
+    {% for topic in my_topics %}
+        <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-slate-900 dark:border-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="topic/{{ topic.id }}">
+        <div class="p-4 md:p-5">
+            <div class="flex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                </svg>
+
+              <div class="grow ms-5">
+                <h3 class="group-hover:text-blue-600 font-semibold text-gray-800 dark:group-hover:text-gray-400 dark:text-gray-200">
+                  {{topic.name}}
+                </h3>
+                <p class="text-sm text-gray-500">
+                  {{topic.description}}
+                </p>
+              </div>
+            </div>
+        </div>
+        </a>
+
+    {% endfor %}
+
+    <!-- End Card -->
+  </div>
+  <!-- End Grid -->
+</div>
+<!-- End Card Section -->
 
 </div>
 

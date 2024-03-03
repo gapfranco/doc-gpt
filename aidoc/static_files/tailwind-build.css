@@ -963,6 +963,10 @@ select {
   flex: none;
 }
 
+.flex-auto {
+  flex: 1 1 auto;
+}
+
 .flex-shrink-0 {
   flex-shrink: 0;
 }
@@ -977,6 +981,16 @@ select {
 
 .basis-full {
   flex-basis: 100%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
 .flex-col {
@@ -1105,6 +1119,10 @@ select {
   border-width: 1px;
 }
 
+.border-\[3px\] {
+  border-width: 3px;
+}
+
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1136,10 +1154,18 @@ select {
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
+.border-current {
+  border-color: currentColor;
+}
+
 .border-x-gray-200 {
   --tw-border-opacity: 1;
   border-left-color: rgb(229 231 235 / var(--tw-border-opacity));
   border-right-color: rgb(229 231 235 / var(--tw-border-opacity));
+}
+
+.border-t-transparent {
+  border-top-color: transparent;
 }
 
 .bg-amber-50 {
@@ -1504,6 +1530,11 @@ select {
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 
+.file\:bg-white::file-selector-button {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
 .file\:px-4::file-selector-button {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -1531,6 +1562,16 @@ select {
 .file\:text-white::file-selector-button {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.file\:text-gray-400::file-selector-button {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+.file\:text-blue-600::file-selector-button {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
 .before\:me-6::before {
@@ -1878,6 +1919,11 @@ select {
   .dark\:text-red-500 {
     --tw-text-opacity: 1;
     color: rgb(239 68 68 / var(--tw-text-opacity));
+  }
+
+  .dark\:shadow-slate-700\/\[\.7\] {
+    --tw-shadow-color: rgb(51 65 85 / .7);
+    --tw-shadow: var(--tw-shadow-colored);
   }
 
   .dark\:ring-gray-800 {

@@ -21,7 +21,6 @@ class TopicForm(forms.Form):
 
 
 class DocumentForm(forms.Form):
-    name = forms.CharField(label="Name", max_length=250)
     file = forms.FileField(label="File")
     topic = forms.ModelChoiceField(
         queryset=Topic.objects.all(), label="Topic", required=False

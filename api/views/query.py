@@ -15,9 +15,8 @@ class QueryView(APIView):
             topic_id = request.data["topic_id"]
             query = request.data["query"]
 
-            topico = Topic.objects.get(pk=topic_id)
-            collection_id = str(topico.collection_id)
-            query_manager = QueryManager(collection_id)
+            Topic.objects.get(pk=topic_id)
+            query_manager = QueryManager(topic_id)
             answer, cost = query_manager.question(query)
 
             return Response(

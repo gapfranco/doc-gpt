@@ -1,28 +1,25 @@
 
-{#    <main class="w-full max-w-3xl mx-auto ">#}
-{#    {% for document in  topic.document_set.all%}#}
-{#      <p>{{ document.name }} - {{ document.base_name }}</p>#}
-{#    {% endfor %}#}
-
-{#    </main>#}
-
-
-
-
 <div class="max-w-7xl px-4 py-4 sm:px-6 lg:px-8 lg:py-4 mx-auto" id="documents">
     <form hx-encoding='multipart/form-data' >
-        <input type="text" id="name" name="name" placeholder="Descrição do documento" class="py-3 px-3 w-1/2 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required>
-        <input type="file" id="file" name="file" class="py-3 px-3 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required>
+      <label for="file-input" class="sr-only">Choose file</label>
+      <input type="file" name="file" id="file" class="w-1/2 border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600
+        file:bg-gray-50 file:border-0
+        file:me-4
+        file:py-3 file:px-4
+        file:text-blue-600
+        dark:file:bg-gray-700 dark:file:text-gray-400">
         <button type="submit" class="py-2 px-2 inline-flex justify-center items-center
             gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600
             text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
             dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            hx-indicator="#indicator"
             hx-post="/new_document/{{ topic.id }}" hx-trigger="click" hx-target="#documents" hx-swap="outerHTML"
             >
             Carregar
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-cloud"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>    </button>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-cloud"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+        </button>
+        <span id="indicator" class="htmx-indicator text-blue-600">Carregando documento...</span>
     </form>
-
     <div class="flex flex-col" id="tabela">
     <div class="-m-1.5 overflow-x-auto">
       <div class="p-1.5 min-w-full inline-block align-middle">
@@ -47,12 +44,6 @@
               <tr>
                 <th scope="col" class="px-4 py-3 text-start">
                     <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
-                      Descrição
-                    </span>
-                </th>
-
-                <th scope="col" class="px-4 py-3 text-start">
-                    <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
                       Arquivo
                     </span>
                 </th>
@@ -63,11 +54,6 @@
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
               {% for doc in doc_pages %}
               <tr class="bg-white hover:bg-gray-50 dark:bg-slate-900 dark:hover:bg-slate-800">
-                <td class="size-px whitespace-nowrap">
-                    <div class="px-4 py-2">
-                      <p class="text-sm text-gray-500">{{ doc.name }}</p>
-                    </div>
-                </td>
                 <td class="h-px ">
                     <div class="px-4 py-2">
                       <p class="text-sm text-gray-500">{{ doc.base_name }}</p>
@@ -112,4 +98,3 @@
   <!-- End Card -->
 </div>
 <!-- End Table Section -->
-{#    </main>#}

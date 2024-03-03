@@ -78,6 +78,8 @@ def new_topic(request):
             user = request.user
             topic = Topic(name=name, description=description, user=user)
             topic.save()
+            return redirect(f"topic/{topic.id}")
+            # return render(request, "index.html")
     else:
         form = TopicForm()
     return render(request, "new_topic.html", {"form": form})
@@ -116,7 +118,6 @@ def new_document(request, topic_id):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             doc = Document(
-                name=request.POST["name"],
                 topic=the_topic,
                 file=request.FILES["file"],
             )

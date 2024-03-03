@@ -50,10 +50,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Topic(models.Model):
     """Topic models"""
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    collection_id = models.UUIDField(default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -61,13 +61,12 @@ class Topic(models.Model):
 class Document(models.Model):
     """Document model"""
 
-    name = models.CharField(max_length=255)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     file = models.FileField(upload_to="media/")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["-id"]
 
     def base_name(self):
         return os.path.basename(self.file.name)

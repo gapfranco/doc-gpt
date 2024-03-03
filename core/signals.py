@@ -19,7 +19,7 @@ def post_insert_topic(sender, instance, created, **kwargs):
     models.signals.post_save.disconnect(post_insert_topic, sender=sender)
 
     # Cria qdrant database
-    qdrant = QdrantManagerLocal(str(instance.collection_id))
+    qdrant = QdrantManagerLocal(str(instance.id))
     qdrant.get_collection()
 
     models.signals.post_save.connect(post_insert_topic, sender=sender)
@@ -30,7 +30,7 @@ def pre_delete_topic(sender, instance, **kwargs):
     models.signals.pre_delete.disconnect(pre_delete_topic, sender=sender)
 
     # Exclui qdrant collection
-    qdrant = QdrantManagerLocal(str(instance.collection_id))
+    qdrant = QdrantManagerLocal(str(instance.id))
     qdrant.delete_collection()
 
     models.signals.pre_delete.connect(pre_delete_topic, sender=sender)
@@ -46,7 +46,7 @@ def post_insert_document(sender, instance, created, **kwargs):
     models.signals.post_save.disconnect(post_insert_document, sender=sender)
 
     # Qdrant database
-    qdrant = QdrantManagerLocal(str(instance.topic.collection_id))
+    qdrant = QdrantManagerLocal(str(instance.topic.id))
     db = qdrant.get_collection()
 
     if instance.file:

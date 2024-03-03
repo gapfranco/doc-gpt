@@ -51,7 +51,6 @@ class DocumentInline(admin.TabularInline):
     model = Document
 
     fields = [
-        "name",
         "file",
     ]
     extra = 0

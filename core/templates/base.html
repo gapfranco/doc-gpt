@@ -10,7 +10,7 @@
         <script src="{% static 'htmx.min.js' %}"></script>
     </head>
 
-<body class="bg-slate-50 dark:bg-slate-900">
+<body class="bg-slate-50 dark:bg-slate-900" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
    <header class="sticky top-0 inset-x-0 flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full bg-white border-b border-gray-200 text-sm py-0 dark:bg-gray-800 dark:border-gray-700">
 {# <header class="sticky top-0 inset-x-0 flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full bg-white border-b border-gray-200 text-sm py-3 sm:py-0 dark:bg-gray-800 dark:border-gray-700">#}
     <nav class="relative w-full mx-auto bg-white border-b border-gray-200 py-3 px-4 sm:py-0 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:border-x dark:bg-gray-800 dark:border-gray-700" aria-label="Global">

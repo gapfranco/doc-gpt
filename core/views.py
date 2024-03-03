@@ -1,10 +1,11 @@
 from django.contrib import auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
 
-from core.forms import LoginForm, RegisterForm, TopicForm
-from core.models import Topic, User
+from core.forms import DocumentForm, LoginForm, RegisterForm, TopicForm
+from core.models import Document, Topic, User
 
 
 @login_required
@@ -82,7 +83,43 @@ def new_topic(request):
     return render(request, "new_topic.html", {"form": form})
 
 
+def _doc_context(request, topic_id):
+    the_topic = Topic.objects.get(pk=topic_id)
+    documents = Document.objects.filter(topic=the_topic)
+    paginator = Paginator(documents, 10)
+    page_doc = request.GET.get("docpage")
+    doc_pages = paginator.get_page(page_doc)
+    return {
+        "topic": the_topic,
+        "doc_pages": doc_pages,
+    }
+
+
 @login_required
 def topic(request, topic_id):
-    topic = Topic.objects.get(pk=topic_id)
-    return render(request, "topic.html", {"topic": topic})
+    context = _doc_context(request, topic_id)
+
+    return render(request, "topic.html", context)
+
+
+@login_required
+def document(request, topic_id):
+    context = _doc_context(request, topic_id)
+
+    return render(request, "documents.html", context)
+
+
+@login_required
+def new_document(request, topic_id):
+    if request.method == "POST":
+        the_topic = Topic.objects.get(pk=topic_id)
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            doc = Document(
+                name=request.POST["name"],
+                topic=the_topic,
+                file=request.FILES["file"],
+            )
+            doc.save()
+    context = _doc_context(request, topic_id)
+    return render(request, "documents.html", context)

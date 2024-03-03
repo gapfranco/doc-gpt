@@ -1,5 +1,7 @@
 from django import forms
 
+from core.models import Topic
+
 
 class LoginForm(forms.Form):
     email = forms.EmailField(label="Email", max_length=100)
@@ -16,3 +18,11 @@ class RegisterForm(forms.Form):
 class TopicForm(forms.Form):
     name = forms.CharField(label="Name", max_length=250)
     description = forms.CharField(label="Description", widget=forms.Textarea)
+
+
+class DocumentForm(forms.Form):
+    name = forms.CharField(label="Name", max_length=250)
+    file = forms.FileField(label="File")
+    topic = forms.ModelChoiceField(
+        queryset=Topic.objects.all(), label="Topic", required=False
+    )

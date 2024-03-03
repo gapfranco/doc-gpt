@@ -9,20 +9,21 @@
 
 
 
-<div class="max-w-7xl px-4 py-4 sm:px-6 lg:px-8 lg:py-4 mx-auto">
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="text" id="name" name="name" placeholder="Descrição do documento" class="py-3 px-3 w-1/2 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required>
-    <input type="file" id="document" name="document" class="py-3 px-3 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required>
-    <button type="submit" class="py-2 px-2 inline-flex justify-center items-center
-        gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600
-        text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
-        dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-        Carregar
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-cloud"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>    </button>
+<div class="max-w-7xl px-4 py-4 sm:px-6 lg:px-8 lg:py-4 mx-auto" id="documents">
+    <form hx-encoding='multipart/form-data' >
+        <input type="text" id="name" name="name" placeholder="Descrição do documento" class="py-3 px-3 w-1/2 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required>
+        <input type="file" id="file" name="file" class="py-3 px-3 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required>
+        <button type="submit" class="py-2 px-2 inline-flex justify-center items-center
+            gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600
+            text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
+            dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+            hx-post="/new_document/{{ topic.id }}" hx-trigger="click" hx-target="#documents" hx-swap="outerHTML"
+            >
+            Carregar
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-cloud"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>    </button>
+    </form>
 
-</form>  <!-- Card -->
-  <div class="flex flex-col">
+    <div class="flex flex-col" id="tabela">
     <div class="-m-1.5 overflow-x-auto">
       <div class="p-1.5 min-w-full inline-block align-middle">
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-slate-900 dark:border-gray-700">
@@ -60,7 +61,7 @@
             </thead>
 
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-              {% for doc in topic.document_set.all %}
+              {% for doc in doc_pages %}
               <tr class="bg-white hover:bg-gray-50 dark:bg-slate-900 dark:hover:bg-slate-800">
                 <td class="size-px whitespace-nowrap">
                     <div class="px-4 py-2">
@@ -82,21 +83,24 @@
           <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700">
             <div>
               <p class="text-sm text-gray-600 dark:text-gray-400">
-                <span class="font-semibold text-gray-800 dark:text-gray-200">6</span> results
+                <span class="font-semibold text-gray-800 dark:text-gray-200">{{ doc_pages.paginator.count }}</span> documentos
               </p>
             </div>
 
             <div>
               <div class="inline-flex gap-x-2">
-                <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                  <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                  Prev
-                </button>
-
-                <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                  Next
-                  <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </button>
+                  {% if doc_pages.has_previous %}
+                  <button type="button" hx-get="{% url 'document' topic.id %}?docpage={{ doc_pages.previous_page_number }}" hx-trigger="click" hx-target="#documents" hx-swap="outerHTML" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                      <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                      Prev
+                  </button>
+                  {% endif %}
+                  {% if doc_pages.has_next %}
+                  <button type="button" hx-get="{% url 'document' topic.id %}?docpage={{ doc_pages.next_page_number }}" hx-trigger="click" hx-target="#documents" hx-swap="outerHTML" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                      Next
+                      <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  </button>
+              {% endif %}
               </div>
             </div>
           </div>

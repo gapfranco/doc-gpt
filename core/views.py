@@ -2,10 +2,18 @@ from django.contrib import auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from core.forms import DocumentForm, LoginForm, RegisterForm, TopicForm
+from core.forms import (
+    DocumentForm,
+    LoginForm,
+    QuestionForm,
+    RegisterForm,
+    TopicForm,
+)
 from core.models import Document, Topic, User
+from core.utils.QueryManager import QueryManager
 
 
 @login_required
@@ -124,3 +132,26 @@ def new_document(request, topic_id):
             doc.save()
     context = _doc_context(request, topic_id)
     return render(request, "documents.html", context)
+
+
+class HttpRespoonse:
+    pass
+
+
+@login_required
+def ask(request, topic_id):
+    saida = ""
+    if request.method == "POST":
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            query_manager = QueryManager(topic_id)
+            quest = form.cleaned_data.get("question")
+            answer, cost = query_manager.question(quest)
+            saida = answer["result"]
+            # saida = f"""
+            #     <div class="w-full border p-6 bg-white
+            #     border-gray-200 rounded-xl
+            #     shadow-sm dark:bg-gray-800 dark:border-gray-700">
+            #         {answer["result"]}
+            #     </div>"""
+    return HttpResponse(saida)

@@ -25,3 +25,7 @@ class DocumentForm(forms.Form):
     topic = forms.ModelChoiceField(
         queryset=Topic.objects.all(), label="Topic", required=False
     )
+
+
+class QuestionForm(forms.Form):
+    question = forms.CharField(widget=forms.Textarea)

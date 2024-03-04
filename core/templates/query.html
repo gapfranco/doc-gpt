@@ -1,9 +1,10 @@
 
     <main class="w-full max-w-5xl mx-auto ">
         <div class="mt-2 ">
+            <form>
             <div>
               <div class="relative">
-                <textarea id="hs-feedback-post-comment-textarea-1" name="hs-feedback-post-comment-textarea-1" rows="3" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Pergunte-me qualquer coisa..."></textarea>
+                <textarea id="question" name="question" rows="3" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Pergunte-me qualquer coisa..."></textarea>
               </div>
             </div>
 
@@ -11,10 +12,16 @@
                 <button type="submit" class="py-2 px-3 inline-flex justify-center items-center
                     gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600
                     text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
-                    dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                    dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"  hx-indicator="#indi-quest"
+                    hx-post="/ask/{{ topic.id }}" hx-trigger="click" hx-target="#answer" hx-swap="innerHtml"
+                >
                     Perguntar
                 </button>
             </div>
+            </form>
+        <div class="flex justify-center mt-4">
+            <span id="indi-quest" class="htmx-indicator">Pesquisando...</span>
+        </div>
         </div>
 
         <div class="mt-4">

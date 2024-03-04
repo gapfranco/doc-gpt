@@ -79,3 +79,4 @@ class Question(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     answer = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    cost = models.FloatField(null=True, blank=True)

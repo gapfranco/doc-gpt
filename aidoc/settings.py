@@ -40,11 +40,11 @@ INSTALLED_APPS = [
     "core",
 ]
 
-REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication"
-    ]
-}
+# REST_FRAMEWORK = {
+#     "DEFAULT_PERMISSION_CLASSES": [
+#         "rest_framework.authentication.TokenAuthentication"
+#     ]
+# }
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True

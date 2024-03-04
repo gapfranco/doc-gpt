@@ -12,7 +12,7 @@ from core.forms import (
     RegisterForm,
     TopicForm,
 )
-from core.models import Document, Topic, User
+from core.models import Document, Question, Topic, User
 from core.utils.QueryManager import QueryManager
 
 
@@ -144,14 +144,12 @@ def ask(request, topic_id):
     if request.method == "POST":
         form = QuestionForm(request.POST)
         if form.is_valid():
+            the_topic = Topic.objects.get(pk=topic_id)
             query_manager = QueryManager(topic_id)
             quest = form.cleaned_data.get("question")
             answer, cost = query_manager.question(quest)
             saida = answer["result"]
-            # saida = f"""
-            #     <div class="w-full border p-6 bg-white
-            #     border-gray-200 rounded-xl
-            #     shadow-sm dark:bg-gray-800 dark:border-gray-700">
-            #         {answer["result"]}
-            #     </div>"""
+            Question.objects.create(
+                topic=the_topic, text=quest, answer=saida, cost=cost
+            )
     return HttpResponse(saida)

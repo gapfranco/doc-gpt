@@ -1,0 +1,14 @@
+
+<div class="max-w-4xl mt-2 p-4 justify-self-center bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <div class="justify-self-center" hx-get="{% url 'question' topic_id %}" hx-trigger="click" hx-target="#questions" hx-swap="innerHTML">
+        <h1 class="block text-sm font-bold text-gray-800 dark:text-white">Pergunta</h1>
+        <p class="block text-sm text-gray-800 dark:text-gray-400">{{ question }}</p>
+
+        <h1 class="mt-5 block text-sm font-bold text-gray-800 dark:text-white">Resposta</h1>
+        <p class="block text-sm leading-relaxed text-gray-800 dark:text-gray-400">{{  answer }}</p>
+
+        <div class="mt-7">
+            <p class="text-sm text-gray-400">Clique na janela para fechar...</p>
+        </div>
+    </div>
+</div>

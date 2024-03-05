@@ -93,30 +93,53 @@ def new_topic(request):
     return render(request, "new_topic.html", {"form": form})
 
 
-def _doc_context(request, topic_id):
+def _context(request, topic_id):
     the_topic = Topic.objects.get(pk=topic_id)
     documents = Document.objects.filter(topic=the_topic)
     paginator = Paginator(documents, 10)
     page_doc = request.GET.get("docpage")
     doc_pages = paginator.get_page(page_doc)
+    questions = Question.objects.filter(topic=the_topic)
+    paginator2 = Paginator(questions, 10)
+    page_que = request.GET.get("qpage")
+    que_pages = paginator2.get_page(page_que)
     return {
         "topic": the_topic,
         "doc_pages": doc_pages,
+        "que_pages": que_pages,
     }
 
 
 @login_required
 def topic(request, topic_id):
-    context = _doc_context(request, topic_id)
+    context = _context(request, topic_id)
 
     return render(request, "topic.html", context)
 
 
 @login_required
 def document(request, topic_id):
-    context = _doc_context(request, topic_id)
+    context = _context(request, topic_id)
 
     return render(request, "documents.html", context)
+
+
+@login_required
+def question(request, topic_id):
+    context = _context(request, topic_id)
+
+    return render(request, "history.html", context)
+
+
+@login_required
+def qa(request, question_id):
+    quest = Question.objects.get(pk=question_id)
+    context = {
+        "question": quest.text,
+        "answer": quest.answer,
+        "topic_id": quest.topic.id,
+    }
+    return render(request, "qa.html", context)
 
 
 @login_required
@@ -130,7 +153,7 @@ def new_document(request, topic_id):
                 file=request.FILES["file"],
             )
             doc.save()
-    context = _doc_context(request, topic_id)
+    context = _context(request, topic_id)
     return render(request, "documents.html", context)
 
 

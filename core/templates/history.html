@@ -20,7 +20,7 @@
           <!-- End Header -->
 
           <!-- Table -->
-          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <table class="divide-y divide-gray-200 dark:divide-gray-700">
             <thead class="bg-gray-50 dark:bg-slate-800">
               <tr>
                 <th scope="col" class="px-4 py-3 text-start">
@@ -45,12 +45,12 @@
               <tr hx-post="/qa/{{ que.id }}" hx-trigger="click" hx-target="#questions" hx-swap="innerHTML" class="bg-white hover:bg-gray-50 dark:bg-slate-900 dark:hover:bg-slate-800">
                 <td class="h-px ">
                     <div class="px-4 py-1">
-                      <p class="text-sm text-gray-800 dark:text-gray-400">{{ que.text | truncatewords:20 }}</p>
+                      <p class="text-sm text-gray-800 dark:text-gray-400">{{ que.text | truncatewords:10 }}</p>
                     </div>
                 </td>
                 <td class="h-px ">
                     <div class="px-4 py-1">
-                      <p class="text-sm text-gray-800 dark:text-gray-400">{{ que.answer | truncatewords:20 }}</p>
+                      <p class="text-sm text-gray-800 dark:text-gray-400">{{ que.answer | truncatewords:10 }}</p>
                     </div>
                 </td>
                 <td class="h-px ">

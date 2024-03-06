@@ -68,7 +68,7 @@
           <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700">
             <div hx-get="{% url 'question' topic.id %}" hx-trigger="click" hx-target="#questions" hx-swap="outerHTML">
                 <span class="font-semibold text-gray-800 dark:text-gray-200">{{ que_pages.paginator.count }}</span> consultas
-                <span class="ml-4 text-xs text-gray-400 dark:text-gray-200">Clique para recarregar</span>
+                <span class="ml-2 text-xs text-gray-400 dark:text-gray-200">Clique para recarregar</span>
             </div>
 
             <div>

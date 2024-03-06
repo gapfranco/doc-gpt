@@ -119,6 +119,13 @@ def topic(request, topic_id):
 
 
 @login_required
+def query(request, topic_id):
+    context = _context(request, topic_id)
+
+    return render(request, "query.html", context)
+
+
+@login_required
 def document(request, topic_id):
     context = _context(request, topic_id)
 

@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.gis.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
@@ -66,6 +68,8 @@ def post_insert_document(sender, instance, created, **kwargs):
             )
             lin_text = txt_split.split_text(text)
             db.add_texts(lin_text)
+            instance.base_name = os.path.basename(instance.file.name)
+            instance.file.delete()
 
     models.signals.post_save.connect(post_insert_document, sender=sender)
 

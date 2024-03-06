@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from markdown import markdown
 
 from core.forms import (
     DocumentForm,
@@ -100,7 +101,7 @@ def _context(request, topic_id):
     page_doc = request.GET.get("docpage")
     doc_pages = paginator.get_page(page_doc)
     questions = Question.objects.filter(topic=the_topic)
-    paginator2 = Paginator(questions, 10)
+    paginator2 = Paginator(questions, 6)
     page_que = request.GET.get("qpage")
     que_pages = paginator2.get_page(page_que)
     return {
@@ -136,7 +137,7 @@ def qa(request, question_id):
     quest = Question.objects.get(pk=question_id)
     context = {
         "question": quest.text,
-        "answer": quest.answer,
+        "answer": markdown(quest.answer),
         "topic_id": quest.topic.id,
     }
     return render(request, "qa.html", context)

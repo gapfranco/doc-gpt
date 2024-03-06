@@ -1,6 +1,6 @@
 
-<div class="flex">
-<div class="max-w-7xl px-4 sm:px-6 lg:px-8 lg:py-4 mx-auto" id="questions">
+<div class="flex" id="questions">
+    <div class="sm:px-6 lg:px-8 lg:py-4 mx-auto">
     <div class="flex flex-col" id="tabela">
     <div class="-m-1.5 overflow-x-auto">
       <div class="p-1.5 min-w-full inline-block align-middle">
@@ -45,17 +45,17 @@
               <tr hx-post="/qa/{{ que.id }}" hx-trigger="click" hx-target="#questions" hx-swap="innerHTML" class="bg-white hover:bg-gray-50 dark:bg-slate-900 dark:hover:bg-slate-800">
                 <td class="h-px ">
                     <div class="px-4 py-1">
-                      <p class="text-sm text-gray-500">{{ que.text | truncatewords:20 }}</p>
+                      <p class="text-sm text-gray-800 dark:text-gray-400">{{ que.text | truncatewords:20 }}</p>
                     </div>
                 </td>
                 <td class="h-px ">
                     <div class="px-4 py-1">
-                      <p class="text-sm text-gray-500">{{ que.answer | truncatewords:20 }}</p>
+                      <p class="text-sm text-gray-800 dark:text-gray-400">{{ que.answer | truncatewords:20 }}</p>
                     </div>
                 </td>
                 <td class="h-px ">
                     <div class="px-4 py-1">
-                      <p class="text-sm text-gray-500">{{ que.created_at }}</p>
+                      <p class="text-sm text-gray-800 dark:text-gray-400">{{ que.created_at | date:"SHORT_DATETIME_FORMAT" }}</p>
                     </div>
                 </td>
               </tr>
@@ -66,22 +66,21 @@
 
           <!-- Footer -->
           <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-gray-700">
-            <div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
+            <div hx-get="{% url 'question' topic.id %}" hx-trigger="click" hx-target="#questions" hx-swap="outerHTML">
                 <span class="font-semibold text-gray-800 dark:text-gray-200">{{ que_pages.paginator.count }}</span> consultas
-              </p>
+                <span class="ml-4 text-xs text-gray-400 dark:text-gray-200">Clique para recarregar</span>
             </div>
 
             <div>
               <div class="inline-flex gap-x-2">
                   {% if que_pages.has_previous %}
-                  <button type="button" hx-get="{% url 'question' topic.id %}?qpage={{ que_pages.previous_page_number }}" hx-trigger="click" hx-target="#questions" hx-swap="innerHTML" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                  <button type="button" hx-get="{% url 'question' topic.id %}?qpage={{ que_pages.previous_page_number }}" hx-trigger="click" hx-target="#questions" hx-swap="outerHTML" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                       <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                       Antes
                   </button>
                   {% endif %}
                   {% if que_pages.has_next %}
-                  <button type="button" hx-get="{% url 'question' topic.id %}?qpage={{ que_pages.next_page_number }}" hx-trigger="click" hx-target="#questions" hx-swap="innerHTML" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                  <button type="button" hx-get="{% url 'question' topic.id %}?qpage={{ que_pages.next_page_number }}" hx-trigger="click" hx-target="#questions" hx-swap="outerHTML" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                       Mais
                       <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                   </button>
@@ -98,4 +97,3 @@
 
 </div>
 </div>
-<!-- End Table Section -->

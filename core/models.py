@@ -1,4 +1,4 @@
-import os
+# import os
 import uuid
 
 from django.contrib.auth.models import (
@@ -64,12 +64,13 @@ class Document(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     file = models.FileField(upload_to="media/")
     created_at = models.DateTimeField(auto_now_add=True)
+    base_name = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         ordering = ["-id"]
 
-    def base_name(self):
-        return os.path.basename(self.file.name)
+    # def base_name(self):
+    #     return os.path.basename(self.file.name)
 
 
 class Question(models.Model):
@@ -80,3 +81,6 @@ class Question(models.Model):
     answer = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     cost = models.FloatField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-id"]

@@ -16,8 +16,10 @@ class RegisterForm(forms.Form):
 
 
 class TopicForm(forms.Form):
-    name = forms.CharField(label="Name", max_length=250)
-    description = forms.CharField(label="Description", widget=forms.Textarea)
+    name = forms.CharField(label="Name", max_length=250, initial="")
+    description = forms.CharField(
+        label="Description", widget=forms.Textarea, initial=""
+    )
 
 
 class DocumentForm(forms.Form):

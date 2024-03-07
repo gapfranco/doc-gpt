@@ -2,6 +2,13 @@
 <div class="flex justify-center">
     <div class="max-w-xl mt-5">
         <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">{{ topic.name }}</h1>
-        <p class="block mt-2 text-lg text-gray-800 dark:text-gray-400">{{ topic.description }}</p>
+        <p class="block mt-2 mb-4 text-lg text-gray-800 dark:text-gray-400">{{ topic.description }}</p>
+
+        <a class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+           href={% url 'edit_topic' topic.id %}>
+            Editar
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>        </abutton>
+        </a>
+
     </div>
 </div>

@@ -94,6 +94,27 @@ def new_topic(request):
     return render(request, "new_topic.html", {"form": form})
 
 
+@login_required
+def edit_topic(request, topic_id):
+    the_topic = Topic.objects.get(id=topic_id)
+    if request.method == "POST":
+        form = TopicForm(request.POST)
+        if form.is_valid():
+            the_topic.name = form.cleaned_data.get("name")
+            the_topic.description = form.cleaned_data.get("description")
+            the_topic.save()
+            return redirect(f"/topic/{the_topic.id}")
+    else:
+        form = TopicForm(
+            initial={
+                "name": the_topic.name,
+                "description": the_topic.description,
+            }
+        )
+
+    return render(request, "new_topic.html", {"form": form})
+
+
 def _context(request, topic_id):
     the_topic = Topic.objects.get(pk=topic_id)
     documents = Document.objects.filter(topic=the_topic)
@@ -101,7 +122,7 @@ def _context(request, topic_id):
     page_doc = request.GET.get("docpage")
     doc_pages = paginator.get_page(page_doc)
     questions = Question.objects.filter(topic=the_topic)
-    paginator2 = Paginator(questions, 6)
+    paginator2 = Paginator(questions, 10)
     page_que = request.GET.get("qpage")
     que_pages = paginator2.get_page(page_que)
     return {

@@ -1,6 +1,6 @@
 
 <div hx-get="{% url 'question' topic_id %}" hx-trigger="click" hx-target="#questions" hx-swap="outerHTML"
-     class="max-w-4xl mt-4 p-6 mx-auto bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+     class="mx-auto w-full sm:w-1/2  mt-4 p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
 
     <h1 class="block text-sm font-bold text-gray-800 dark:text-white">Consulta</h1>
     <p class="block text-sm text-gray-800 dark:text-gray-400">{{ question }}</p>

@@ -17,10 +17,14 @@ from core.models import Document, Question, Topic, User
 from core.utils.QueryManager import QueryManager
 
 
+def main(request):
+    return render(request, "index.html")
+
+
 @login_required
 def frontpage(request):
     my_topics = Topic.objects.filter(user=request.user)
-    return render(request, "index.html", {"my_topics": my_topics})
+    return render(request, "main.html", {"my_topics": my_topics})
 
 
 def login(request):

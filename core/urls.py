@@ -12,6 +12,7 @@ from .views import (
     edit_topic,
     frontpage,
     login,
+    main,
     new_document,
     new_topic,
     qa,
@@ -24,7 +25,8 @@ from .views import (
 
 urlpatterns = [
     # path("", lambda request: redirect("admin/", permanent=False)),
-    path("", frontpage, name="frontpage"),
+    path("", main, name="frontpage"),
+    path("main", frontpage, name="main"),
     path("new_topic", new_topic, name="new_topic"),
     path("topic/<str:topic_id>", topic, name="topic"),
     path("edit_topic/<str:topic_id>", edit_topic, name="edit_topic"),

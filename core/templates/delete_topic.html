@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="w-full max-w-4xl mx-auto ">
+
+    <form method="post" action={% url 'delete_topic' topic.id %}>
+    {% csrf_token %}
+
+    <div class="mt-2 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div class="text-center mt-4">
+            <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Excluir Tópico</h1>
+        </div>
+
+        <div class="mt-5 w-full sm:w-1/2 p-5 overflow-hidden dark:bg-slate-900">
+            <h1 class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">{{ topic.name }}</h1>
+            <p class="block mt-2 mb-4 text-lg text-gray-800 dark:text-gray-400">{{ topic.description }}</p>
+        </div>
+
+        <div class="flex justify-center">
+            <a href="/"  class="py-3 px-3 mb-2 mx-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-white/10 dark:hover:bg-white/20 dark:text-white dark:hover:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                Cancelar
+            </a>
+
+            <button type="submit" class="py-3 px-3 mb-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-900 dark:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+               Confirmar
+            </button>
+        </div>
+
+    </div>
+
+    </form>
+
+</main>
+
+{% endblock %}

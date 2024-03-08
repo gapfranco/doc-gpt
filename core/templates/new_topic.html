@@ -9,14 +9,13 @@
                     <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Tópico</h1>
                 </div>
 
-            <div class="mt-5">
-
             <!-- Form -->
             <form method="post">
                 {% csrf_token %}
                 {% for error in form.non_field_errors %}
                     <p class="text-sm text-red-600 mt-2 mb-2">{{error}}</p>
                 {% endfor %}
+
                 <div class="grid gap-y-4">
 
                 <!-- Form Group -->
@@ -34,18 +33,20 @@
                   </div>
                 </div>
 
-                <!-- End Form Group -->
-                <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center
-                    gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600
-                    text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
-                    dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                    Salvar
-                </button>
+                <div class="flex justify-center">
+                    <a href="/"  class="py-3 px-3 mb-2 mx-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-white/10 dark:hover:bg-white/20 dark:text-white dark:hover:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                        Cancelar
+                    </a>
+
+                    <button type="submit" class="py-3 px-3 mb-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-900 dark:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                       Confirmar
+                    </button>
+                </div>
 
                 </div>
+
             </form>
-            <!-- End Form -->
-          </div>
+
         </div>
       </div>
     </main>

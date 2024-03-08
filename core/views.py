@@ -97,6 +97,7 @@ def new_topic(request):
 @login_required
 def edit_topic(request, topic_id):
     the_topic = Topic.objects.get(id=topic_id)
+
     if request.method == "POST":
         form = TopicForm(request.POST)
         if form.is_valid():
@@ -115,6 +116,15 @@ def edit_topic(request, topic_id):
     return render(request, "new_topic.html", {"form": form})
 
 
+@login_required
+def delete_topic(request, topic_id):
+    the_topic = Topic.objects.get(id=topic_id)
+    if request.method == "POST":
+        the_topic.delete()
+        return redirect("/")
+    return render(request, "delete_topic.html", {"topic": the_topic})
+
+
 def _context(request, topic_id):
     the_topic = Topic.objects.get(pk=topic_id)
     documents = Document.objects.filter(topic=the_topic)
@@ -122,7 +132,7 @@ def _context(request, topic_id):
     page_doc = request.GET.get("docpage")
     doc_pages = paginator.get_page(page_doc)
     questions = Question.objects.filter(topic=the_topic)
-    paginator2 = Paginator(questions, 10)
+    paginator2 = Paginator(questions, 6)
     page_que = request.GET.get("qpage")
     que_pages = paginator2.get_page(page_que)
     return {

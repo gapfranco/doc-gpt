@@ -125,7 +125,7 @@ def delete_topic(request, topic_id):
     the_topic = Topic.objects.get(id=topic_id)
     if request.method == "POST":
         the_topic.delete()
-        return redirect("/")
+        return redirect("/main")
     return render(request, "delete_topic.html", {"topic": the_topic})
 
 

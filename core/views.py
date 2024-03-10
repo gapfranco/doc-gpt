@@ -9,6 +9,7 @@ from markdown import markdown
 from core.forms import (
     DocumentForm,
     LoginForm,
+    ProfileForm,
     QuestionForm,
     RegisterForm,
     TopicForm,
@@ -19,6 +20,30 @@ from core.utils.QueryManager import QueryManager
 
 def main(request):
     return render(request, "index.html")
+
+
+def profile(request):
+    user = request.user
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            user.name = form.cleaned_data.get("name")
+            user.preferred_language = form.cleaned_data.get(
+                "preferred_language"
+            )
+            user.save()
+            return redirect("/main")
+    else:
+        form = ProfileForm(
+            {
+                "name": user.name,
+                "preferred_language": user.preferred_language,
+                "query_balance": user.query_balance,
+            }
+        )
+
+    return render(request, "profile.html", {"form": form})
 
 
 @login_required

@@ -1,6 +1,7 @@
 
     <main class="w-full max-w-5xl mx-auto " id="qry">
         <div class="mt-2 ">
+        {% if user.query_balance > 0 %}
             <form>
             <div>
               <div class="relative">
@@ -17,7 +18,6 @@
                     Enviar
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
                 </button>
-
                 <button type="button" hx-get="{% url 'query' topic.id %}" hx-trigger="click" hx-target="#qry" hx-swap="outerHTML"
                         class="py-2 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                     Limpar
@@ -28,6 +28,11 @@
             <div class="flex justify-center mt-2">
                 <span id="indi-quest" class="htmx-indicator text-blue-500">Pesquisando...</span>
             </div>
+        {% else %}
+            <p class="text-center mt-7">Sem saldo para novas consultas</p>
+            <p class="text-center mt-1">Adquira mais <a href="/profile" class="mt-1 py-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">aqui</a></p>
+        {% endif %}
+
         </div>
 
         <div class="mt-2">

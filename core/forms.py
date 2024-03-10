@@ -1,6 +1,6 @@
 from django import forms
 
-from core.models import Topic
+from core.models import Topic, User
 
 
 class LoginForm(forms.Form):
@@ -20,6 +20,14 @@ class TopicForm(forms.Form):
     description = forms.CharField(
         label="Description", widget=forms.Textarea, initial=""
     )
+
+
+class ProfileForm(forms.Form):
+    name = forms.CharField(label="Name", max_length=250)
+    preferred_language = forms.ChoiceField(
+        label="Preferred Language", choices=User.LANGUAGE_CHOICES
+    )
+    query_balance = forms.IntegerField()
 
 
 class DocumentForm(forms.Form):

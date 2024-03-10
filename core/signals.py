@@ -8,7 +8,23 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from core.utils.QdrantManager import QdrantManagerLocal
 from core.utils.text_extractor import extract_text
 
-from .models import Document, Topic
+from .models import Document, Question, Topic
+
+
+@receiver(post_save, sender=Question)
+def post_insert_question(sender, instance, created, **kwargs):
+    """Post_save signal from topic inclusion"""
+
+    if not created:
+        return
+
+    models.signals.post_save.disconnect(post_insert_question, sender=sender)
+
+    user = instance.topic.user
+    user.query_balance -= 1
+    user.save()
+
+    models.signals.post_save.connect(post_insert_question, sender=sender)
 
 
 @receiver(post_save, sender=Topic)

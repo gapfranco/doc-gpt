@@ -37,10 +37,18 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system."""
 
+    LANGUAGE_CHOICES = [
+        # ("en", "English"),
+        ("pt-br", "Portugues"),
+    ]
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    preferred_language = models.CharField(
+        max_length=5, choices=LANGUAGE_CHOICES, default="pt-br"
+    )
+    query_balance = models.IntegerField(default=100)
 
     objects = UserManager()
 

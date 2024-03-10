@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@preline/overlay": "^2.0.2",
+    "@preline/select": "^2.0.2",
     "@preline/tabs": "^2.0.2",
     "preline": "^2.0.3"
   }

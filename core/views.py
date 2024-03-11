@@ -184,21 +184,21 @@ def topic(request, topic_id):
 def query(request, topic_id):
     context = _context(request, topic_id)
 
-    return render(request, "query.html", context)
+    return render(request, "partials/query.html", context)
 
 
 @login_required
 def document(request, topic_id):
     context = _context(request, topic_id)
 
-    return render(request, "documents.html", context)
+    return render(request, "partials/documents.html", context)
 
 
 @login_required
 def question(request, topic_id):
     context = _context(request, topic_id)
 
-    return render(request, "history.html", context)
+    return render(request, "partials/history.html", context)
 
 
 @login_required
@@ -209,7 +209,7 @@ def qa(request, question_id):
         "answer": markdown(quest.answer),
         "topic_id": quest.topic.id,
     }
-    return render(request, "qa.html", context)
+    return render(request, "partials/qa.html", context)
 
 
 @login_required
@@ -224,7 +224,7 @@ def new_document(request, topic_id):
             )
             doc.save()
     context = _context(request, topic_id)
-    return render(request, "documents.html", context)
+    return render(request, "partials/documents.html", context)
 
 
 class HttpRespoonse:

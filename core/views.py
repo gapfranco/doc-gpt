@@ -120,7 +120,7 @@ def new_topic(request):
             # return render(request, "index.html")
     else:
         form = TopicForm()
-    return render(request, "new_topic.html", {"form": form})
+    return render(request, "new_topic.html", {"form": form, "id": ""})
 
 
 @login_required
@@ -142,7 +142,9 @@ def edit_topic(request, topic_id):
             }
         )
 
-    return render(request, "new_topic.html", {"form": form})
+    return render(
+        request, "new_topic.html", {"form": form, "id": the_topic.id}
+    )
 
 
 @login_required

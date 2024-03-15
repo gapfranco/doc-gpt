@@ -1,14 +1,17 @@
 import os
 
+from django.conf import settings
 from django.contrib.gis.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter as Splitter
 
-from core.utils.QdrantManager import QdrantManagerLocal
+from core.utils.QdrantManager import QdrantManager
 from core.utils.text_extractor import extract_text
 
 from .models import Document, Question, Topic
+
+logger = settings.LOGGER
 
 
 @receiver(post_save, sender=Question)
@@ -37,7 +40,7 @@ def post_insert_topic(sender, instance, created, **kwargs):
     models.signals.post_save.disconnect(post_insert_topic, sender=sender)
 
     # Cria qdrant database
-    qdrant = QdrantManagerLocal(str(instance.id))
+    qdrant = QdrantManager(str(instance.id))
     qdrant.get_collection()
 
     models.signals.post_save.connect(post_insert_topic, sender=sender)
@@ -48,7 +51,7 @@ def pre_delete_topic(sender, instance, **kwargs):
     models.signals.pre_delete.disconnect(pre_delete_topic, sender=sender)
 
     # Exclui qdrant collection
-    qdrant = QdrantManagerLocal(str(instance.id))
+    qdrant = QdrantManager(str(instance.id))
     qdrant.delete_collection()
 
     models.signals.pre_delete.connect(pre_delete_topic, sender=sender)
@@ -64,28 +67,32 @@ def post_insert_document(sender, instance, created, **kwargs):
     models.signals.post_save.disconnect(post_insert_document, sender=sender)
 
     # Qdrant database
-    qdrant = QdrantManagerLocal(str(instance.topic.id))
+    qdrant = QdrantManager(str(instance.topic.id))
     db = qdrant.get_collection()
 
     if instance.file:
         text = extract_text(instance.file)
         if text:
-            txt_split = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-                model_name="text-embedding-ada-002",
-                # The appropriate chunk size needs to be adjusted based
-                # on the PDF being queried.
-                # If it's too large, it may not be able to reference
-                # information from
-                # various parts during question answering.
-                # On the other hand, if it's too small, one chunk may
-                # not contain enough contextual information.
-                chunk_size=500,
-                chunk_overlap=0,
-            )
-            lin_text = txt_split.split_text(text)
-            db.add_texts(lin_text)
-            instance.base_name = os.path.basename(instance.file.name)
-            instance.file.delete()
+            try:
+                txt_split = Splitter.from_tiktoken_encoder(
+                    model_name="text-embedding-ada-002",
+                    # The appropriate chunk size needs to be adjusted based
+                    # on the PDF being queried.
+                    # If it's too large, it may not be able to reference
+                    # information from
+                    # various parts during question answering.
+                    # On the other hand, if it's too small, one chunk may
+                    # not contain enough contextual information.
+                    chunk_size=500,
+                    chunk_overlap=0,
+                )
+                lin_text = txt_split.split_text(text)
+                db.add_texts(lin_text)
+            except Exception as e:
+                logger.error(f"Erro em text split {e}")
+
+        instance.base_name = os.path.basename(instance.file.name)
+        instance.file.delete()
 
     models.signals.post_save.connect(post_insert_document, sender=sender)
 

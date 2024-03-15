@@ -3,7 +3,7 @@ from langchain_community.callbacks import get_openai_callback
 from langchain_openai import ChatOpenAI
 
 from aidoc import settings
-from core.utils.QdrantManager import QdrantManagerLocal
+from core.utils.QdrantManager import QdrantManager
 
 
 class QueryManager:
@@ -13,7 +13,7 @@ class QueryManager:
         self.llm = ChatOpenAI(temperature=0, model_name=model_name)
 
     def _build_qa_model(self):
-        qdrant = QdrantManagerLocal(self.collection_id)
+        qdrant = QdrantManager(self.collection_id)
         client = qdrant.get_collection()
         retriever = client.as_retriever(
             # There are also "mmr," "similarity_score_threshold," and others.

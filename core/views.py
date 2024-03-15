@@ -22,6 +22,10 @@ def main(request):
     return render(request, "index.html")
 
 
+def stripe(request):
+    return render(request, "partials/stripe.html")
+
+
 def profile(request):
     user = request.user
 
@@ -246,3 +250,13 @@ def ask(request, topic_id):
                 topic=the_topic, text=quest, answer=saida, cost=cost
             )
     return HttpResponse(saida)
+
+
+@login_required
+def delete_user_account(request):
+    user = request.user
+    # user.is_active = False  # Opção 1: torna o usuário inativo
+    # user.save()
+    user.delete()  # Opção 2: Excluir o usuário diretamente
+    logout(request)
+    return redirect("/")

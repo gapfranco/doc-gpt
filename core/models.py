@@ -77,9 +77,6 @@ class Document(models.Model):
     class Meta:
         ordering = ["-id"]
 
-    # def base_name(self):
-    #     return os.path.basename(self.file.name)
-
 
 class Question(models.Model):
     """Question model"""

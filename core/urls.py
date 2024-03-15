@@ -8,6 +8,7 @@ from django.urls import path
 from .views import (
     ask,
     delete_topic,
+    delete_user_account,
     document,
     edit_topic,
     frontpage,
@@ -21,6 +22,7 @@ from .views import (
     question,
     register,
     signout,
+    stripe,
     topic,
 )
 
@@ -29,6 +31,7 @@ urlpatterns = [
     path("", main, name="frontpage"),
     path("main", frontpage, name="main"),
     path("profile", profile, name="profile"),
+    path("stripe", stripe, name="stripe"),
     path("new_topic", new_topic, name="new_topic"),
     path("topic/<str:topic_id>", topic, name="topic"),
     path("edit_topic/<str:topic_id>", edit_topic, name="edit_topic"),
@@ -42,4 +45,5 @@ urlpatterns = [
     path("login", login, name="login"),
     path("signout", signout, name="signout"),
     path("register", register, name="register"),
+    path("delete_account/", delete_user_account, name="delete_account"),
 ]

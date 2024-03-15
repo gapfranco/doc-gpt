@@ -1,5 +1,3 @@
-from abc import ABC, abstractmethod
-
 from langchain_community.vectorstores import Qdrant
 from langchain_openai import OpenAIEmbeddings
 from qdrant_client import QdrantClient
@@ -8,22 +6,19 @@ from qdrant_client.models import Distance, VectorParams
 from aidoc import settings
 
 
-class QdrantManager(ABC):
+class QdrantManager:
     def __init__(self, col_name: str):
         self.col_name = col_name
 
-    @abstractmethod
+    def get_client(self):
+        if settings.QDRANT_PATH:
+            return QdrantClient(path=settings.QDRANT_PATH)
+        return QdrantClient(
+            url=settings.QDRANT_URL, api_key=settings.QDRANT_KEY
+        )
+
     def get_collection(self) -> Qdrant:
-        pass
-
-    @abstractmethod
-    def delete_collection(self) -> None:
-        pass
-
-
-class QdrantManagerLocal(QdrantManager):
-    def get_collection(self) -> Qdrant:
-        client = QdrantClient(path=settings.QDRANT_PATH)
+        client = self.get_client()
         collections = client.get_collections().collections
         collection_names = [collection.name for collection in collections]
 
@@ -42,5 +37,5 @@ class QdrantManagerLocal(QdrantManager):
         )
 
     def delete_collection(self) -> None:
-        client = QdrantClient(path=settings.QDRANT_PATH)
+        client = self.get_client()
         client.delete_collection(self.col_name)

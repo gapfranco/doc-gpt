@@ -1,0 +1,37 @@
+# fly.toml app configuration file generated for doc-gpt on 2024-03-13T19:19:13-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'doc-gpt'
+primary_region = 'gru'
+console_command = '/code/manage.py shell'
+
+[build]
+
+#[deploy]
+#  release_command = 'python manage.py migrate --noinput'
+
+[env]
+  PORT = '8000'
+
+[mounts]
+  source="doc_data"
+  destination="/data"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[[statics]]
+  guest_path = '/code/static'
+  url_prefix = '/static/'

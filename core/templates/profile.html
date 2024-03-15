@@ -69,8 +69,15 @@
                     <input type="text" id="query_balance" name="query_balance" disabled value="{{ form.query_balance.value }}" class="max-w-sm py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" required aria-describedby="name-error">
                   </div>
                 </div>
+
+{#                <div id="stripe">#}
+{#                    <a hx-get="{% url 'stripe' %}" hx-trigger="click" hx-target="#stripe" hx-swap="innerHTML"  class="py-3 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-500 hover:bg-red-100 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-red-800/30 dark:hover:text-red-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">#}
+{#                       Comprar mais consultas#}
+{#                    </a>#}
+{#                </div>#}
+
                 <div>
-                    <a href="#" class="py-3 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-500 hover:bg-red-100 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-red-800/30 dark:hover:text-red-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                    <a href="/delete_account/" class="py-3 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-500 hover:bg-red-100 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-red-800/30 dark:hover:text-red-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                        Excluir sua conta
                     </a>
                 </div>
@@ -92,6 +99,5 @@
         </div>
 
     </div>
-</main>
 
 {% endblock %}

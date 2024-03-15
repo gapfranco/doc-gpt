@@ -2,6 +2,7 @@
 Django settings for aidoc project.
 """
 
+import logging
 import os
 from pathlib import Path
 
@@ -83,14 +84,6 @@ TEMPLATES = [
     },
 ]
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = os.environ.get("EMAIL_PORT")
-EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
-DEFAULT_FROM_EMAIL = os.environ.get("SERVER_EMAIL")
-
 WSGI_APPLICATION = "aidoc.wsgi.application"
 
 # Database
@@ -163,7 +156,36 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "core.User"
 LOGIN_URL = "login"
 
-QDRANT_PATH = os.path.join(
-    BASE_DIR, os.environ.get("QDRANT_PATH", "local_qdrant")
-)
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
+DEFAULT_FROM_EMAIL = os.environ.get("SERVER_EMAIL")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "root": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    },
+}
+LOGGER = logging.getLogger(__name__)
+
+QDRANT_PATH = None
+qpath = os.environ.get("QDRANT_PATH")
+if qpath:
+    QDRANT_PATH = os.path.join(BASE_DIR, qpath)
+QDRANT_URL = os.environ.get("QDRANT_URL")
+QDRANT_KEY = os.environ.get("QDRANT_KEY")
+
 LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-3.5-turbo")

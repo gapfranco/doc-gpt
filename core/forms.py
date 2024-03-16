@@ -1,6 +1,7 @@
 from django import forms
 
 from core.models import Topic, User
+from core.utils.text_extractor import check_text
 
 
 class LoginForm(forms.Form):
@@ -35,6 +36,17 @@ class DocumentForm(forms.Form):
     topic = forms.ModelChoiceField(
         queryset=Topic.objects.all(), label="Topic", required=False
     )
+
+    def clean_file(self):
+        file = self.cleaned_data["file"]
+        file_type = check_text(file)
+        if not file_type:
+            raise forms.ValidationError(
+                "Apenas arquivos texto, PDF ou Word são permitidos."
+            )
+        if file.size > 10 * 1024 * 1024:
+            raise forms.ValidationError("Arquivo muito grande. Máximo é 10MB")
+        return file
 
 
 class QuestionForm(forms.Form):

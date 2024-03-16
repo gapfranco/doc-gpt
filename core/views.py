@@ -163,7 +163,7 @@ def delete_topic(request, topic_id):
 def _context(request, topic_id):
     the_topic = Topic.objects.get(pk=topic_id)
     documents = Document.objects.filter(topic=the_topic)
-    paginator = Paginator(documents, 10)
+    paginator = Paginator(documents, 8)
     page_doc = request.GET.get("docpage")
     doc_pages = paginator.get_page(page_doc)
     questions = Question.objects.filter(topic=the_topic)
@@ -218,6 +218,7 @@ def qa(request, question_id):
 
 @login_required
 def new_document(request, topic_id):
+    error = ""
     if request.method == "POST":
         the_topic = Topic.objects.get(pk=topic_id)
         form = DocumentForm(request.POST, request.FILES)
@@ -227,7 +228,10 @@ def new_document(request, topic_id):
                 file=request.FILES["file"],
             )
             doc.save()
+        else:
+            error = form.errors["file"][0]
     context = _context(request, topic_id)
+    context["error"] = error
     return render(request, "partials/documents.html", context)
 
 

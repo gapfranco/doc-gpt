@@ -2,7 +2,9 @@
 <div class="lg:py-4 w-full sm:w-1/2" id="documents">
     <form hx-encoding='multipart/form-data' >
       <label for="file-input" class="sr-only">Choose file</label>
-      <input type="file" name="file" id="file" class="w-1/2 sm-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600
+      <input type="file" name="file" id="file"
+             hx-get="{% url 'empty' %}" hx-trigger="click" hx-target="#error" hx-swap="innerHTML"
+             class="w-3/4 sm-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600
         file:bg-gray-50 file:border-0
         file:me-4
         file:py-3 file:px-4
@@ -14,7 +16,9 @@
                     Carregar
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload-cloud"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
         </button>
-        <span id="indicator" class="htmx-indicator text-blue-600">Carregando documento...</span>
+        <span id="indicator" class="htmx-indicator text-blue-600 text-xs">
+            Carregando...
+        </span>
         {% if error %}
             <div id="error" class="ml-4 text-red-600">{{ error }}</div>
         {% endif %}

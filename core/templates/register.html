@@ -70,12 +70,24 @@
                 </div>
                 <!-- End Form Group -->
 
-                <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center
-                    gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600
-                    text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
-                    dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                    Registrar-se
-                </button>
+{#                <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center#}
+{#                    gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600#}
+{#                    text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none#}
+{#                    dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">#}
+{#                    Registrar-se#}
+{#                </button>#}
+
+                <div class="flex justify-center mt-4 gap-6">
+                    <a href="/" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-gray-100 text-gray-500 hover:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-white/10 dark:hover:bg-white/20 dark:text-gray-400 dark:hover:text-gray-300 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+                        Criar conta
+                    </button>
+                </div>
+
+
+
 
                 </div>
             </form>

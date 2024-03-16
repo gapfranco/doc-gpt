@@ -29,6 +29,7 @@ class ProfileForm(forms.Form):
         label="Preferred Language", choices=User.LANGUAGE_CHOICES
     )
     query_balance = forms.IntegerField()
+    doc_balance = forms.IntegerField()
 
 
 class DocumentForm(forms.Form):
@@ -46,6 +47,8 @@ class DocumentForm(forms.Form):
             )
         if file.size > 10 * 1024 * 1024:
             raise forms.ValidationError("Arquivo muito grande. Máximo é 10MB")
+        if file_type == "pdf error":
+            raise forms.ValidationError("PDF inválido ou danificado")
         return file
 
 

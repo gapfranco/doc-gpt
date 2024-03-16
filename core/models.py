@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=5, choices=LANGUAGE_CHOICES, default="pt-br"
     )
     query_balance = models.IntegerField(default=100)
+    doc_balance = models.IntegerField(default=50)
 
     objects = UserManager()
 
@@ -70,7 +71,7 @@ class Document(models.Model):
     """Document model"""
 
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    file = models.FileField(upload_to="media/")
+    file = models.FileField(upload_to="docs/")
     created_at = models.DateTimeField(auto_now_add=True)
     base_name = models.CharField(max_length=255, null=True, blank=True)
 

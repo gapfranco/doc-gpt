@@ -19,6 +19,11 @@ console_command = '/code/manage.py shell'
   source="doc_data"
   destination="/data"
 
+[processes]
+  app = "python -m gunicorn --bind :8000 --workers 2 hover.wsgi"
+  worker = "python -m celery -A aidoc worker -l info"
+  flower = "python -m celery -A aidoc flower --address=0.0.0.0 --port=5555 -l info --basic-auth=aidoc:flor@345"
+
 [http_service]
   internal_port = 8000
   force_https = true
@@ -26,6 +31,17 @@ console_command = '/code/manage.py shell'
   auto_start_machines = true
   min_machines_running = 1
   processes = ['app']
+
+[[services]]
+  http_checks = []
+  internal_port = 5555
+  processes = ["flower"]
+  protocol = "tcp"
+  script_checks = []
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 5555
 
 [[vm]]
   memory = '1gb'

@@ -26,6 +26,10 @@ def stripe(request):
     return render(request, "partials/stripe.html")
 
 
+def empty(request):
+    return HttpResponse("")
+
+
 def profile(request):
     user = request.user
 
@@ -44,6 +48,7 @@ def profile(request):
                 "name": user.name,
                 "preferred_language": user.preferred_language,
                 "query_balance": user.query_balance,
+                "doc_balance": user.doc_balance,
             }
         )
 
@@ -77,7 +82,7 @@ def login(request):
 
 
 def register(request):
-    next_url = "/"
+    next_url = "/main"
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -219,17 +224,21 @@ def qa(request, question_id):
 @login_required
 def new_document(request, topic_id):
     error = ""
-    if request.method == "POST":
-        the_topic = Topic.objects.get(pk=topic_id)
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            doc = Document(
-                topic=the_topic,
-                file=request.FILES["file"],
-            )
-            doc.save()
-        else:
-            error = form.errors["file"][0]
+    if request.user.doc_balance > 0:
+        if request.method == "POST":
+            the_topic = Topic.objects.get(pk=topic_id)
+            form = DocumentForm(request.POST, request.FILES)
+            if form.is_valid():
+                doc = Document(
+                    topic=the_topic,
+                    file=request.FILES["file"],
+                    base_name=request.FILES["file"].name,
+                )
+                doc.save()
+            else:
+                error = form.errors["file"][0]
+    else:
+        error = "Sem saldo de documentos. Compre mais no menu 'Sua conta'"
     context = _context(request, topic_id)
     context["error"] = error
     return render(request, "partials/documents.html", context)
@@ -253,7 +262,7 @@ def ask(request, topic_id):
             Question.objects.create(
                 topic=the_topic, text=quest, answer=saida, cost=cost
             )
-    return HttpResponse(saida)
+    return HttpResponse(markdown(saida))
 
 
 @login_required

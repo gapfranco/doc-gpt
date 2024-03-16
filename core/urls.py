@@ -11,6 +11,7 @@ from .views import (
     delete_user_account,
     document,
     edit_topic,
+    empty,
     frontpage,
     login,
     main,
@@ -29,6 +30,7 @@ from .views import (
 urlpatterns = [
     # path("", lambda request: redirect("admin/", permanent=False)),
     path("", main, name="frontpage"),
+    path("empty", empty, name="empty"),
     path("main", frontpage, name="main"),
     path("profile", profile, name="profile"),
     path("stripe", stripe, name="stripe"),

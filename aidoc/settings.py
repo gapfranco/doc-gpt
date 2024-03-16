@@ -164,6 +164,11 @@ EMAIL_PORT = os.environ.get("EMAIL_PORT")
 EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
 DEFAULT_FROM_EMAIL = os.environ.get("SERVER_EMAIL")
 
+REDIS_URL = os.getenv("REDIS_URL")
+CELERY_BROKER_URL = f"{REDIS_URL}/0"
+CELERY_TIMEZONE = "America/Sao_Paulo"
+CELERY_TASK_SERIALIZER = "pickle"
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,

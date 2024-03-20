@@ -24,10 +24,11 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --only main --no-root --no-interaction
 COPY . /code
 
-ENV SECRET_KEY "HgScil6dWLYEbaYYmsQNcsHySSjJFnfPTHWRfl3zu7qUbIyB46"
+#ENV SECRET_KEY "HgScil6dWLYEbaYYmsQNcsHySSjJFnfPTHWRfl3zu7qUbIyB46"
 RUN python manage.py collectstatic --noinput
-RUN chmod +x ./startup.sh
+RUN #chmod +x ./startup.sh
+
 EXPOSE 8000
 
-#CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "aidoc.wsgi"]
-ENTRYPOINT ["./startup.sh"]
+#ENTRYPOINT ["./startup.sh"]
+CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "aidoc.wsgi"]

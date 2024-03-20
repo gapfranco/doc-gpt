@@ -9,8 +9,8 @@ console_command = '/code/manage.py shell'
 
 [build]
 
-#[deploy]
-#  release_command = 'python manage.py migrate --noinput'
+[deploy]
+  release_command = 'python manage.py migrate --noinput'
 
 [env]
   PORT = '8000'
@@ -20,7 +20,7 @@ console_command = '/code/manage.py shell'
   destination="/data"
 
 [processes]
-  app = "python -m gunicorn --bind :8000 --workers 2 hover.wsgi"
+  app = "python -m gunicorn --bind :8000 --workers 2 aidoc.wsgi"
   worker = "python -m celery -A aidoc worker -l info"
   flower = "python -m celery -A aidoc flower --address=0.0.0.0 --port=5555 -l info --basic-auth=aidoc:flor@345"
 
@@ -43,10 +43,10 @@ console_command = '/code/manage.py shell'
     handlers = ["tls", "http"]
     port = 5555
 
-[[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
-  cpus = 1
+#[[vm]]
+#  memory = '1gb'
+#  cpu_kind = 'shared'
+#  cpus = 1
 
 [[statics]]
   guest_path = '/code/static'

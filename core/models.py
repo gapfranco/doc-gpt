@@ -71,12 +71,17 @@ class Document(models.Model):
     """Document model"""
 
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    file = models.FileField(upload_to="docs/")
     created_at = models.DateTimeField(auto_now_add=True)
     base_name = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         ordering = ["-id"]
+
+
+class DocumentBody(models.Model):
+    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    doc = models.BinaryField()
+    type = models.CharField(max_length=100)
 
 
 class Question(models.Model):

@@ -4,9 +4,9 @@ from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
 from core.utils.QdrantManager import QdrantManager
-from core.utils.text_extractor import extract_text
+from core.utils.text_extractor import extract_body
 
-from .models import Document, Question, Topic
+from .models import Document, DocumentBody, Question, Topic
 
 logger = settings.LOGGER
 
@@ -55,28 +55,52 @@ def pre_delete_topic(sender, instance, **kwargs):
     models.signals.pre_delete.connect(pre_delete_topic, sender=sender)
 
 
-@receiver(post_save, sender=Document)
-def post_insert_document(sender, instance, created, **kwargs):
-    """Post_save signal from document inclusion"""
+# @receiver(post_save, sender=Document)
+# def post_insert_document(sender, instance, created, **kwargs):
+#     """Post_save signal from document inclusion"""
+#
+#     if not created:
+#         return
+#
+#     models.signals.post_save.disconnect(post_insert_document, sender=sender)
+#
+#     try:
+#         if instance.file:
+#             extract_text.delay(instance.file, str(instance.topic.id))
+#             # instance.base_name = os.path.basename(instance.file.name)
+#             # instance.save()
+#             # instance.file.delete()
+#             user = instance.topic.user
+#             if user.doc_balance > 0:
+#                 user.doc_balance -= 1
+#                 user.save()
+#
+#     finally:
+#         models.signals.post_save.connect(post_insert_document, sender=sender)
+
+
+@receiver(post_save, sender=DocumentBody)
+def post_insert_body(sender, instance, created, **kwargs):
+    """Post_save signal from document body inclusion"""
 
     if not created:
         return
 
-    models.signals.post_save.disconnect(post_insert_document, sender=sender)
+    models.signals.post_save.disconnect(post_insert_body, sender=sender)
 
     try:
-        if instance.file:
-            extract_text.delay(instance.file, str(instance.topic.id))
+        if instance.doc:
+            extract_body.delay(instance.id, str(instance.document.topic.id))
             # instance.base_name = os.path.basename(instance.file.name)
             # instance.save()
             # instance.file.delete()
-            user = instance.topic.user
+            user = instance.document.topic.user
             if user.doc_balance > 0:
                 user.doc_balance -= 1
                 user.save()
 
     finally:
-        models.signals.post_save.connect(post_insert_document, sender=sender)
+        models.signals.post_save.connect(post_insert_body, sender=sender)
 
 
 @receiver(pre_delete, sender=Document)

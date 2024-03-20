@@ -14,7 +14,7 @@ from core.forms import (
     RegisterForm,
     TopicForm,
 )
-from core.models import Document, Question, Topic, User
+from core.models import Document, DocumentBody, Question, Topic, User
 from core.utils.QueryManager import QueryManager
 
 
@@ -231,10 +231,17 @@ def new_document(request, topic_id):
             if form.is_valid():
                 doc = Document(
                     topic=the_topic,
-                    file=request.FILES["file"],
                     base_name=request.FILES["file"].name,
                 )
+                file = request.FILES.get("file")
+                body = b""
+                for chunk in file.chunks():
+                    body += chunk
                 doc.save()
+                doc_body = DocumentBody(
+                    document=doc, doc=body, type=file.content_type
+                )
+                doc_body.save()
             else:
                 error = form.errors["file"][0]
     else:

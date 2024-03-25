@@ -1,0 +1,27 @@
+
+<div class="mx-auto w-full mt-4 pt-6 px-6 pb-2 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+
+    <h1 class="block text-sm font-bold text-gray-800 dark:text-white">Consulta</h1>
+    <p class="block text-sm text-gray-800 dark:text-gray-400">{{ question }}</p>
+
+    <h1 class="mt-5 block text-sm font-bold text-gray-800 dark:text-white">Resposta</h1>
+    <span class="block text-sm text-gray-800 dark:text-gray-400 leading-relaxed">
+        {% autoescape off %}
+            {{  answer }} {{ id }}
+        {% endautoescape %}
+    </span>
+
+    <h1 class="mt-5 block text-sm font-bold text-gray-800 dark:text-white">Data/hora</h1>
+    <p class="text-sm text-gray-800 dark:text-gray-400">{{ created_at | date:"SHORT_DATETIME_FORMAT" }}</p>
+
+    <div class="mt-7 flex gap-6 justify-end">
+        <button type="buttom" hx-get="{% url 'chat_delete' id %}" hx-trigger="click" hx-target="#chat" hx-swap="outerHTML"  hx-confirm="Tem certeza? Essa operação não poderá ser desfeita"
+                class="py-2 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-100 text-red-800 hover:bg-red-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-red-900 dark:text-red-500 dark:hover:text-red-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+        Descartar
+        </button>
+        <button type="button" hx-get="{% url 'chat' topic_id %}" hx-trigger="click" hx-target="#chat" hx-swap="outerHTML"
+                class="py-2 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-900 dark:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+        Ok
+        </button>
+    </div>
+</div>

@@ -5,8 +5,11 @@ URL configuration for hover project.
 # from django.shortcuts import redirect
 from django.urls import path
 
-from .views import (
+from .views import (  # qa,; question,
     ask,
+    chat,
+    chat_delete,
+    chat_detail,
     delete_topic,
     delete_user_account,
     document,
@@ -18,9 +21,7 @@ from .views import (
     new_document,
     new_topic,
     profile,
-    qa,
     query,
-    question,
     register,
     signout,
     stripe,
@@ -41,8 +42,11 @@ urlpatterns = [
     path("document/<str:topic_id>", document, name="document"),
     path("new_document/<str:topic_id>", new_document, name="new_document"),
     path("query/<str:topic_id>", query, name="query"),
-    path("question/<str:topic_id>", question, name="question"),
-    path("qa/<int:question_id>", qa, name="qa"),
+    # path("question/<str:topic_id>", question, name="question"),
+    path("chat/<str:topic_id>", chat, name="chat"),
+    path("chat_detail/<int:question_id>", chat_detail, name="chat_detail"),
+    path("chat_delete/<int:id>", chat_delete, name="chat_delete"),
+    # path("qa/<int:question_id>", qa, name="qa"),
     path("ask/<str:topic_id>", ask, name="ask"),
     path("login", login, name="login"),
     path("signout", signout, name="signout"),

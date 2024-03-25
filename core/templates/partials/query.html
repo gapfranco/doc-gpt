@@ -13,16 +13,11 @@
                 <button type="submit"
                          class="py-2 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                         hx-indicator="#indi-quest"
-                    hx-post="/ask/{{ topic.id }}" hx-trigger="click" hx-target="#answer" hx-swap="innerHtml"
+                    hx-post="/ask/{{ topic.id }}" hx-trigger="click" hx-target="#chat" hx-swap="innerHtml"
                 >
                     Enviar
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
                 </button>
-{#                <button type="button" hx-get="{% url 'query' topic.id %}" hx-trigger="click" hx-target="#qry" hx-swap="outerHTML"#}
-{#                        class="py-2 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">#}
-{#                    Limpar#}
-{#                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-x"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>#}
-{#                </button>#}
             </div>
             </form>
             <div class="flex justify-center mt-2">
@@ -36,7 +31,7 @@
         </div>
 
         <div class="mt-2">
-            <p id="answer"></p>
+            {% include 'partials/chat.html' %}
         </div>
 
     </main>

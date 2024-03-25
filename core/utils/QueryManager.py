@@ -25,8 +25,6 @@ class QueryManager:
             llm=self.llm,
             chain_type="stuff",
             retriever=retriever,
-            return_source_documents=True,
-            verbose=True,
         )
 
     def question(self, query):

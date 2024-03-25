@@ -197,6 +197,13 @@ def query(request, topic_id):
 
 
 @login_required
+def chat(request, topic_id):
+    context = _context(request, topic_id)
+
+    return render(request, "partials/chat.html", context)
+
+
+@login_required
 def document(request, topic_id):
     context = _context(request, topic_id)
 
@@ -204,21 +211,24 @@ def document(request, topic_id):
 
 
 @login_required
-def question(request, topic_id):
-    context = _context(request, topic_id)
-
-    return render(request, "partials/history.html", context)
-
-
-@login_required
-def qa(request, question_id):
+def chat_detail(request, question_id):
     quest = Question.objects.get(pk=question_id)
     context = {
         "question": quest.text,
         "answer": markdown(quest.answer),
+        "created_at": quest.created_at,
+        "id": quest.id,
         "topic_id": quest.topic.id,
     }
-    return render(request, "partials/qa.html", context)
+    return render(request, "partials/chat_detail.html", context)
+
+
+@login_required
+def chat_delete(request, id):
+    quest = Question.objects.get(pk=id)
+    topic_id = quest.topic_id
+    quest.delete()
+    return redirect(f"/chat/{topic_id}")
 
 
 @login_required
@@ -257,7 +267,8 @@ class HttpRespoonse:
 
 @login_required
 def ask(request, topic_id):
-    saida = ""
+    context = _context(request, topic_id)
+    # saida = ""
     if request.method == "POST":
         form = QuestionForm(request.POST)
         if form.is_valid():
@@ -266,10 +277,18 @@ def ask(request, topic_id):
             quest = form.cleaned_data.get("question")
             answer, cost = query_manager.question(quest)
             saida = answer["result"]
-            Question.objects.create(
+            quest = Question.objects.create(
                 topic=the_topic, text=quest, answer=saida, cost=cost
             )
-    return HttpResponse(markdown(saida))
+            context = {
+                "question": quest.text,
+                "answer": markdown(quest.answer),
+                "created_at": quest.created_at,
+                "id": quest.id,
+                "topic_id": quest.topic.id,
+            }
+            return render(request, "partials/chat_detail.html", context)
+    return render(request, "partials/chat.html", context)
 
 
 @login_required

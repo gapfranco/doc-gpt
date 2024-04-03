@@ -1,11 +1,11 @@
 meta {
-  name: Query
+  name: Lista fazendas
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
-  url: http://localhost:8000/api/query/
+  url: {{origem}}/api/query/
   body: json
   auth: none
 }
@@ -17,7 +17,8 @@ headers {
 
 body:json {
   {
-    "topic_id": 5,
-    "query": "Do que se trata os documentos"
+    "cidade": "",
+    "uf": "",
+    "culturas": ""
   }
 }

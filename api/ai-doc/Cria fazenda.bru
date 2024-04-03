@@ -1,0 +1,44 @@
+meta {
+  name: Cria fazenda
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{origem}}/api/cria_fazenda/
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "codigo": "07164374813",
+    "nome_fazenda": "Aurora",
+    "nome_produtor": "Deise",
+    "cidade": "Ribeirão Preto",
+    "uf": "SP",
+    "area_total": 300,
+    "area_vegetacao": 80,
+    "area_cultura": 200,
+    "culturas": [
+      {
+        "cultura": "Soja",
+        "area": 100
+      },
+      {
+        "cultura": "Cana",
+        "area": 30
+      },
+      {
+        "cultura": "Algodão",
+        "area": 40
+      }
+    ]
+  }
+
+}

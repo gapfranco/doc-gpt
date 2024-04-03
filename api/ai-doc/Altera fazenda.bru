@@ -1,0 +1,29 @@
+meta {
+  name: Altera fazenda
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{origem}}/api/altera_fazenda/13
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+body:json {
+  {
+    "nome_fazenda": "Aurorinha",
+    "culturas": [
+      {
+        "cultura": "Cana",
+        "area": 10
+      }
+    ]
+  }
+
+}

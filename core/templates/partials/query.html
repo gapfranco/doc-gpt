@@ -4,12 +4,19 @@
         {% if user.query_balance > 0 %}
             <form>
             <div>
-              <div class="relative" hx-get="{% url 'query' topic.id %}" hx-trigger="click" hx-target="#qry" hx-swap="outerHTML">
+              <div class="relative">
                 <textarea id="question" name="question" rows="3" class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600" placeholder="Pergunte-me qualquer coisa..."></textarea>
               </div>
             </div>
 
-            <div class="justify-end w-full flex mt-1">
+            <div class="justify-between w-full flex mt-1">
+                <button type="button"
+                         class="py-2 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                    hx-get="{% url 'query' topic.id %}" hx-trigger="click" hx-target="#qry" hx-swap="outerHTML"
+                >
+                    Limpar
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
                 <button type="submit"
                          class="py-2 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                         hx-indicator="#indi-quest"

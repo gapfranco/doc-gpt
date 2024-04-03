@@ -26,7 +26,7 @@ COPY . /code
 
 #ENV SECRET_KEY "HgScil6dWLYEbaYYmsQNcsHySSjJFnfPTHWRfl3zu7qUbIyB46"
 RUN python manage.py collectstatic --noinput
-RUN #chmod +x ./startup.sh
+#RUN chmod +x ./startup.sh
 
 EXPOSE 8000
 

@@ -241,6 +241,7 @@ def new_document(request, topic_id):
             if form.is_valid():
                 doc = Document(
                     topic=the_topic,
+                    status="Processando",
                     base_name=request.FILES["file"].name,
                 )
                 file = request.FILES.get("file")

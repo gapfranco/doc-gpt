@@ -15,9 +15,9 @@ console_command = '/code/manage.py shell'
 [env]
   PORT = '8000'
 
-[mounts]
-  source="doc_data"
-  destination="/data"
+#[mounts]
+#  source="doc_data"
+#  destination="/data"
 
 [processes]
   app = "python -m gunicorn --bind :8000 --workers 2 aidoc.wsgi"
@@ -43,10 +43,10 @@ console_command = '/code/manage.py shell'
     handlers = ["tls", "http"]
     port = 5555
 
-#[[vm]]
-#  memory = '1gb'
-#  cpu_kind = 'shared'
-#  cpus = 1
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
 
 [[statics]]
   guest_path = '/code/static'

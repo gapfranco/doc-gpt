@@ -40,13 +40,16 @@ class DocumentForm(forms.Form):
 
     def clean_file(self):
         file = self.cleaned_data["file"]
+        max_size = 30
+        if file.size > max_size * 1024 * 1024:
+            raise forms.ValidationError(
+                f"Arquivo muito grande. Máximo é {max_size}MB"
+            )
         file_type = check_text(file)
         if not file_type:
             raise forms.ValidationError(
                 "Apenas arquivos texto, PDF ou Word são permitidos."
             )
-        if file.size > 10 * 1024 * 1024:
-            raise forms.ValidationError("Arquivo muito grande. Máximo é 10MB")
         if file_type == "pdf error":
             raise forms.ValidationError("PDF inválido ou danificado")
         return file

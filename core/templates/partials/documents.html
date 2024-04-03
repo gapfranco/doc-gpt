@@ -23,19 +23,16 @@
             <div id="error" class="ml-4 text-red-600">{{ error }}</div>
         {% endif %}
     </form>
-    <div class="flex flex-col" id="tabela">
+    <div class="flex flex-col" id="tabela" hx-get="/new_document/{{ topic.id }}" hx-trigger="click" hx-target="#documents" hx-swap="outerHTML">
     <div class="-m-1.5 overflow-x-auto">
       <div class="p-1.5 min-w-full inline-block align-middle">
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-slate-900 dark:border-gray-700">
-            <!-- Header -->
+          <!-- Header -->
           <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-gray-700">
             <div>
               <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
                 Documentos
               </h2>
-{#              <p class="text-sm text-gray-600 dark:text-gray-400">#}
-{#                Documentos carregados no tópico <em><strong>{{ topic.name }}</strong></em>#}
-{#              </p>#}
             </div>
 
           </div>
@@ -50,7 +47,11 @@
                       Arquivo
                     </span>
                 </th>
-
+                <th scope="col" class="px-4 py-3 text-start w-1/4">
+                    <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200">
+                      Status
+                    </span>
+                </th>
               </tr>
             </thead>
 
@@ -60,6 +61,17 @@
                 <td class="h-px ">
                     <div class="px-4 py-1">
                       <p class="text-sm text-gray-800 dark:text-gray-400">{{ doc.base_name }}</p>
+                    </div>
+                </td>
+                <td class="h-px ">
+                    <div class="px-4 py-1">
+                      {% if doc.status == 'ERRO' %}
+                          <p class="text-sm text-red-600 dark:text-red-400">{{ doc.status }}</p>
+                      {% elif doc.status == 'Processando' %}
+                          <p class="text-sm text-blue-600 dark:text-blue-400">{{ doc.status }}</p>
+                      {% else %}
+                          <p class="text-sm text-gray-800 dark:text-gray-400">{{ doc.status }}</p>
+                      {% endif %}
                     </div>
                 </td>
               </tr>

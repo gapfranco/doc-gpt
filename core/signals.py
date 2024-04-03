@@ -91,6 +91,7 @@ def post_insert_body(sender, instance, created, **kwargs):
     try:
         if instance.doc:
             extract_body.delay(instance.id, str(instance.document.topic.id))
+            # extract_body(instance.id, str(instance.document.topic.id))
             # instance.base_name = os.path.basename(instance.file.name)
             # instance.save()
             # instance.file.delete()

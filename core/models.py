@@ -60,6 +60,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Topic(models.Model):
     """Topic model"""
 
+    TOPIC_TYPES = [
+        ("ge", "Geral"),
+        ("es", "Estudos"),
+        ("jr", "Jurídico"),
+        ("sa", "Medicina e Saúde"),
+        ("ci", "Ciência"),
+        ("tc", "Tecnologia"),
+        ("an", "Cuidado de Animais"),
+        ("nr", "Normas"),
+    ]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
@@ -67,6 +78,10 @@ class Topic(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     publish = models.BooleanField(default=False)
+    type = models.CharField(max_length=2, choices=TOPIC_TYPES, default="ge")
+
+    def type_name(self):
+        return self.get_type_display()
 
 
 class TopicInvite(models.Model):

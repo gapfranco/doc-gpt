@@ -149,8 +149,11 @@ def new_topic(request):
         if form.is_valid():
             name = form.cleaned_data.get("name")
             description = form.cleaned_data.get("description")
+            type = form.cleaned_data.get("type")
             user = request.user
-            topic = Topic(name=name, description=description, user=user)
+            topic = Topic(
+                name=name, description=description, type=type, user=user
+            )
             topic.save()
             return redirect(f"topic/{topic.id}")
             # return render(request, "index.html")
@@ -168,6 +171,7 @@ def edit_topic(request, topic_id):
         if form.is_valid():
             the_topic.name = form.cleaned_data.get("name")
             the_topic.description = form.cleaned_data.get("description")
+            the_topic.type = form.cleaned_data.get("type")
             the_topic.save()
             return redirect(f"/topic/{the_topic.id}")
     else:
@@ -175,6 +179,7 @@ def edit_topic(request, topic_id):
             initial={
                 "name": the_topic.name,
                 "description": the_topic.description,
+                "type": the_topic.type,
             }
         )
 

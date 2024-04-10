@@ -21,6 +21,7 @@ class TopicForm(forms.Form):
     description = forms.CharField(
         label="Description", widget=forms.Textarea, initial=""
     )
+    type = forms.ChoiceField(label="Tipo", choices=Topic.TOPIC_TYPES)
 
 
 class ProfileForm(forms.Form):

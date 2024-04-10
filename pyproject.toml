@@ -33,6 +33,8 @@ pre = "pre-commit run --all-files"
 export = "poetry export -f requirements.txt -o requirements.txt --without-hashes"
 tailwind_watch = "tailwindcss -i tailwind.css -o aidoc/static_files/tailwind-build.css --watch"
 tailwind_minify = "tailwindcss -i tailwind.css -o aidoc/static_files/tailwind-build.css --minify"
+worker = "celery -A aidoc worker -l info"
+flower = "celery -A aidoc flower --address=0.0.0.0 --port=5555 --loglevel=info"
 
 [tool.poetry]
 name = "ai-doc"

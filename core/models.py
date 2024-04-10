@@ -50,6 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     query_balance = models.IntegerField(default=100)
     doc_balance = models.IntegerField(default=50)
+    query_credits = models.IntegerField(default=0)
 
     objects = UserManager()
 
@@ -57,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Topic(models.Model):
-    """Topic models"""
+    """Topic model"""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
@@ -65,6 +66,30 @@ class Topic(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    publish = models.BooleanField(default=False)
+
+
+class TopicInvite(models.Model):
+    """Topic invite model"""
+
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class TopicInviteSent(models.Model):
+    """Topic send invite model"""
+
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def accepted(self):
+        if TopicInvite.objects.filter(
+            topic=self.topic, user__email=self.email
+        ).exists():
+            return True
+        return False
 
 
 class Document(models.Model):
@@ -93,6 +118,9 @@ class Question(models.Model):
     answer = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     cost = models.FloatField(null=True, blank=True)
+    user = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.CASCADE
+    )
 
     class Meta:
         ordering = ["-id"]

@@ -20,10 +20,15 @@ def post_insert_question(sender, instance, created, **kwargs):
 
     models.signals.post_save.disconnect(post_insert_question, sender=sender)
 
-    user = instance.topic.user
+    user = instance.user
     if user.query_balance > 0:
         user.query_balance -= 1
         user.save()
+    topic_user = instance.topic.user
+
+    if topic_user != user:
+        topic_user.query_credits += 1
+        topic_user.save()
 
     models.signals.post_save.connect(post_insert_question, sender=sender)
 

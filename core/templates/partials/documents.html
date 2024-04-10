@@ -65,13 +65,7 @@
                 </td>
                 <td class="h-px ">
                     <div class="px-4 py-1">
-                      {% if doc.status == 'ERRO' %}
-                          <p class="text-sm text-red-600 dark:text-red-400">{{ doc.status }}</p>
-                      {% elif doc.status == 'Processando' %}
-                          <p class="text-sm text-blue-600 dark:text-blue-400">{{ doc.status }}</p>
-                      {% else %}
-                          <p class="text-sm text-gray-800 dark:text-gray-400">{{ doc.status }}</p>
-                      {% endif %}
+                      <p class="text-sm text-gray-800 dark:text-gray-400">{{ doc.status }}</p>
                     </div>
                 </td>
               </tr>

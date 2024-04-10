@@ -2,19 +2,29 @@ from django.contrib import auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from markdown import markdown
 
 from core.forms import (
     DocumentForm,
+    InviteForm,
     LoginForm,
     ProfileForm,
     QuestionForm,
     RegisterForm,
     TopicForm,
 )
-from core.models import Document, DocumentBody, Question, Topic, User
+from core.models import (
+    Document,
+    DocumentBody,
+    Question,
+    Topic,
+    TopicInvite,
+    TopicInviteSent,
+    User,
+)
 from core.utils.QueryManager import QueryManager
 
 
@@ -49,6 +59,7 @@ def profile(request):
                 "preferred_language": user.preferred_language,
                 "query_balance": user.query_balance,
                 "doc_balance": user.doc_balance,
+                "query_credits": user.query_credits,
             }
         )
 
@@ -57,7 +68,14 @@ def profile(request):
 
 @login_required
 def frontpage(request):
-    my_topics = Topic.objects.filter(user=request.user)
+    invites = [
+        invite.topic.id
+        for invite in TopicInvite.objects.filter(user=request.user)
+    ]
+    my_topics = Topic.objects.filter(
+        Q(user=request.user) | Q(publish=True) & (Q(id__in=invites))
+    )
+
     return render(request, "main.html", {"my_topics": my_topics})
 
 
@@ -103,11 +121,20 @@ def register(request):
                     name=name, password=password, email=email
                 )
                 user.save()
+                create_invites(user)
                 auth.login(request, user)
                 return redirect(next_url)
     else:
         form = RegisterForm()
     return render(request, "register.html", {"form": form, "next": next_url})
+
+
+def create_invites(user):
+    for invite_sent in TopicInviteSent.objects.filter(email=user.email):
+        topic = invite_sent.topic
+        if not TopicInvite.objects.filter(topic=topic, user=user).exists():
+            invite = TopicInvite(topic=topic, user=user)
+            invite.save()
 
 
 def signout(request):
@@ -171,7 +198,7 @@ def _context(request, topic_id):
     paginator = Paginator(documents, 8)
     page_doc = request.GET.get("docpage")
     doc_pages = paginator.get_page(page_doc)
-    questions = Question.objects.filter(topic=the_topic)
+    questions = Question.objects.filter(topic=the_topic, user=request.user)
     paginator2 = Paginator(questions, 6)
     page_que = request.GET.get("qpage")
     que_pages = paginator2.get_page(page_que)
@@ -210,6 +237,36 @@ def document(request, topic_id):
     return render(request, "partials/documents.html", context)
 
 
+def _publish_context(request, topic_id):
+    the_topic = Topic.objects.get(pk=topic_id)
+    invites = TopicInviteSent.objects.filter(topic=the_topic)
+    paginator = Paginator(invites, 8)
+    page_inv = request.GET.get("invpage")
+    inv_pages = paginator.get_page(page_inv)
+    return {
+        "topic": the_topic,
+        "paginator": paginator,
+        "inv_pages": inv_pages,
+    }
+
+
+@login_required
+def publish(request, topic_id):
+    context = _publish_context(request, topic_id)
+
+    return render(request, "partials/publish.html", context)
+
+
+@login_required
+def publish_topic(request, topic_id):
+    the_topic = Topic.objects.get(pk=topic_id)
+    the_topic.publish = not the_topic.publish
+    the_topic.save()
+    return redirect(f"/topic/{topic_id}")
+    # context = _context(request, topic_id)
+    # return render(request, "partials/documents.html", context)
+
+
 @login_required
 def chat_detail(request, question_id):
     quest = Question.objects.get(pk=question_id)
@@ -241,7 +298,6 @@ def new_document(request, topic_id):
             if form.is_valid():
                 doc = Document(
                     topic=the_topic,
-                    status="Processando",
                     base_name=request.FILES["file"].name,
                 )
                 file = request.FILES.get("file")
@@ -262,6 +318,38 @@ def new_document(request, topic_id):
     return render(request, "partials/documents.html", context)
 
 
+def maybe_create_invite(email, topic):
+    user = User.objects.filter(email=email).first()
+    if user:
+        if not TopicInvite.objects.filter(topic=topic, user=user).exists():
+            invite = TopicInvite(topic=topic, user=user)
+            invite.save()
+
+
+@login_required
+def new_invite(request, topic_id):
+    error = ""
+    if request.method == "POST":
+        the_topic = Topic.objects.get(pk=topic_id)
+        form = InviteForm(request.POST)
+        if form.is_valid():
+            invite_sent = TopicInviteSent.objects.filter(
+                topic=the_topic, email=form.cleaned_data["email"]
+            )
+            if invite_sent.exists():
+                error = "Convite já foi enviado para esse email"
+            else:
+                email = form.cleaned_data["email"]
+                invite_sent = TopicInviteSent(topic=the_topic, email=email)
+                invite_sent.save()
+                maybe_create_invite(email, the_topic)
+        else:
+            error = form.errors["email"][0]
+    context = _publish_context(request, topic_id)
+    context["error"] = error
+    return render(request, "partials/publish.html", context)
+
+
 class HttpRespoonse:
     pass
 
@@ -279,7 +367,11 @@ def ask(request, topic_id):
             answer, cost = query_manager.question(quest)
             saida = answer["result"]
             quest = Question.objects.create(
-                topic=the_topic, text=quest, answer=saida, cost=cost
+                topic=the_topic,
+                text=quest,
+                answer=saida,
+                cost=cost,
+                user=request.user,
             )
             context = {
                 "question": quest.text,
@@ -300,3 +392,14 @@ def delete_user_account(request):
     user.delete()  # Opção 2: Excluir o usuário diretamente
     logout(request)
     return redirect("/")
+
+
+@login_required
+def delete_invite(request, topic_id, invite_id):
+    invite_sent = TopicInviteSent.objects.get(id=invite_id)
+    user = User.objects.filter(email=invite_sent.email).first()
+    if user:
+        TopicInvite.objects.get(user=user, topic__id=topic_id).delete()
+    invite_sent.delete()
+    context = _publish_context(request, topic_id)
+    return render(request, "partials/publish.html", context)

@@ -30,6 +30,7 @@ class ProfileForm(forms.Form):
     )
     query_balance = forms.IntegerField()
     doc_balance = forms.IntegerField()
+    query_credits = forms.IntegerField()
 
 
 class DocumentForm(forms.Form):
@@ -57,3 +58,7 @@ class DocumentForm(forms.Form):
 
 class QuestionForm(forms.Form):
     question = forms.CharField(widget=forms.Textarea)
+
+
+class InviteForm(forms.Form):
+    email = forms.EmailField(label="Email", max_length=100)

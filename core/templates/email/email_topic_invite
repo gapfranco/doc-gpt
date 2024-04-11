@@ -1,0 +1,33 @@
+﻿
+Saudações,
+
+Espero que este e-mail encontre todos bem.
+
+Meu nome é {{topic.user.name}}. Estou enviando este convite para usarem o serviço DocGPT,
+uma novidade que tem o potencial de revolucionar a maneira como se gerencia, acessa e compartilha conhecimento.
+
+
+O DocGPT é uma plataforma inovadora que combina o poder da inteligência artificial com a
+flexibilidade na publicação de documentos para oferecer uma experiência inédita.
+Com ele você pode criar tópicos personalizados, carregar documentos nesses
+tópicos e disponibilizá-los para consultas baseadas em IA.
+
+Este convite inclui acesso do tópico <strong>{{topic.name}}</strong>. Esse tópico contém meus conhecimentos no assunto,
+carregados numa série de documentos elaborados por mim.
+
+Assunto do tópico:
+------------------
+{{topic.description}}
+
+Não vai encontrar essas respostas nos sites de Inteligência Artificial ou na Internet,
+simplesmente porque são o fruto de meus estudos e experiência.
+
+Além disso, poderá usar a ferramenta para criar seus próprios tópicos, responder a
+perguntas e criar resumos de seus documentos.
+
+Visite o site http://doc-gpt.fly.dev e crie uma conta se ainda não tiver.
+É grátis e poderá cancelar facilmente se assim desejar.
+
+Atenciosamente,
+
+{{topic.user.name}}

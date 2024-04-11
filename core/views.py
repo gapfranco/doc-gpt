@@ -25,6 +25,7 @@ from core.models import (
     TopicInviteSent,
     User,
 )
+from core.utils.mail_invite import topic_invite
 from core.utils.QueryManager import QueryManager
 
 
@@ -329,6 +330,7 @@ def maybe_create_invite(email, topic):
         if not TopicInvite.objects.filter(topic=topic, user=user).exists():
             invite = TopicInvite(topic=topic, user=user)
             invite.save()
+    topic_invite(topic.id, email)
 
 
 @login_required
@@ -406,5 +408,13 @@ def delete_invite(request, topic_id, invite_id):
     if user:
         TopicInvite.objects.get(user=user, topic__id=topic_id).delete()
     invite_sent.delete()
+    context = _publish_context(request, topic_id)
+    return render(request, "partials/publish.html", context)
+
+
+@login_required
+def send_invite(request, topic_id, invite_id):
+    invite_sent = TopicInviteSent.objects.get(id=invite_id)
+    topic_invite(topic_id, invite_sent.email)
     context = _publish_context(request, topic_id)
     return render(request, "partials/publish.html", context)

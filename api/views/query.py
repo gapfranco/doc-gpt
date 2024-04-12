@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 
 from api.serializers.query_serializers import QuerySerializer
 from core.models import Topic
-from core.utils.QueryManager import QueryManager
+from core.utils.query_manager import QueryManager
 
 
 class QueryView(APIView):

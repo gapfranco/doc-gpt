@@ -3,7 +3,7 @@ from langchain_community.callbacks import get_openai_callback
 from langchain_openai import ChatOpenAI
 
 from aidoc import settings
-from core.utils.QdrantManager import QdrantManager
+from core.utils.qdrant_manager import QdrantManager
 
 
 class QueryManager:

@@ -7,7 +7,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter as Splitter
 from PyPDF2 import PdfReader
 
 from core.models import DocumentBody
-from core.utils.QdrantManager import QdrantManager
+from core.utils.qdrant_manager import QdrantManager
 
 
 @shared_task

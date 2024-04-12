@@ -30,7 +30,6 @@ class ProfileForm(forms.Form):
         label="Preferred Language", choices=User.LANGUAGE_CHOICES
     )
     query_balance = forms.IntegerField()
-    doc_balance = forms.IntegerField()
     query_credits = forms.IntegerField()
 
 

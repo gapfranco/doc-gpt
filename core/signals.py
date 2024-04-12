@@ -3,7 +3,7 @@ from django.contrib.gis.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
-from core.utils.QdrantManager import QdrantManager
+from core.utils.qdrant_manager import QdrantManager
 from core.utils.text_extractor import extract_body
 
 from .models import DocumentBody, Question, Topic
@@ -73,10 +73,6 @@ def post_insert_body(sender, instance, created, **kwargs):
         if instance.doc:
             extract_body.delay(instance.id, str(instance.document.topic.id))
             # extract_body(instance.id, str(instance.document.topic.id))
-            user = instance.document.topic.user
-            if user.doc_balance > 0:
-                user.doc_balance -= 1
-                user.save()
 
     finally:
         models.signals.post_save.connect(post_insert_body, sender=sender)

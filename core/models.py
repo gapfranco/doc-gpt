@@ -8,8 +8,6 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 
-# from django.contrib.gis.db import models
-
 
 class UserManager(BaseUserManager):
     """Manager for users."""
@@ -49,7 +47,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=5, choices=LANGUAGE_CHOICES, default="pt-br"
     )
     query_balance = models.IntegerField(default=100)
-    doc_balance = models.IntegerField(default=50)
     query_credits = models.IntegerField(default=0)
 
     objects = UserManager()

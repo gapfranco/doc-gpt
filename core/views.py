@@ -26,7 +26,7 @@ from core.models import (
     User,
 )
 from core.utils.mail_invite import topic_invite
-from core.utils.QueryManager import QueryManager
+from core.utils.query_manager import QueryManager
 
 
 def main(request):
@@ -59,7 +59,6 @@ def profile(request):
                 "name": user.name,
                 "preferred_language": user.preferred_language,
                 "query_balance": user.query_balance,
-                "doc_balance": user.doc_balance,
                 "query_credits": user.query_credits,
             }
         )
@@ -297,28 +296,25 @@ def chat_delete(request, id):
 @login_required
 def new_document(request, topic_id):
     error = ""
-    if request.user.doc_balance > 0:
-        if request.method == "POST":
-            the_topic = Topic.objects.get(pk=topic_id)
-            form = DocumentForm(request.POST, request.FILES)
-            if form.is_valid():
-                doc = Document(
-                    topic=the_topic,
-                    base_name=request.FILES["file"].name,
-                )
-                file = request.FILES.get("file")
-                body = b""
-                for chunk in file.chunks():
-                    body += chunk
-                doc.save()
-                doc_body = DocumentBody(
-                    document=doc, doc=body, type=file.content_type
-                )
-                doc_body.save()
-            else:
-                error = form.errors["file"][0]
-    else:
-        error = "Sem saldo de documentos. Compre mais no menu 'Sua conta'"
+    if request.method == "POST":
+        the_topic = Topic.objects.get(pk=topic_id)
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            doc = Document(
+                topic=the_topic,
+                base_name=request.FILES["file"].name,
+            )
+            file = request.FILES.get("file")
+            body = b""
+            for chunk in file.chunks():
+                body += chunk
+            doc.save()
+            doc_body = DocumentBody(
+                document=doc, doc=body, type=file.content_type
+            )
+            doc_body.save()
+        else:
+            error = form.errors["file"][0]
     context = _context(request, topic_id)
     context["error"] = error
     return render(request, "partials/documents.html", context)

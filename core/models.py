@@ -67,7 +67,6 @@ class Topic(models.Model):
         ("sa", "Medicina e Saúde"),
         ("ci", "Ciência"),
         ("tc", "Tecnologia"),
-        ("an", "Cuidado de Animais"),
         ("nr", "Normas"),
     ]
 

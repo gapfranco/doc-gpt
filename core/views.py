@@ -330,7 +330,7 @@ def maybe_create_invite(email, topic):
         if not TopicInvite.objects.filter(topic=topic, user=user).exists():
             invite = TopicInvite(topic=topic, user=user)
             invite.save()
-    topic_invite(topic.id, email)
+    topic_invite.delay(topic.id, email)
 
 
 @login_required
@@ -415,6 +415,6 @@ def delete_invite(request, topic_id, invite_id):
 @login_required
 def send_invite(request, topic_id, invite_id):
     invite_sent = TopicInviteSent.objects.get(id=invite_id)
-    topic_invite(topic_id, invite_sent.email)
+    topic_invite.delay(topic_id, invite_sent.email)
     context = _publish_context(request, topic_id)
     return render(request, "partials/publish.html", context)

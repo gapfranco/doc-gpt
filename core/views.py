@@ -368,7 +368,7 @@ def ask(request, topic_id):
             query_manager = QueryManager(topic_id)
             quest = form.cleaned_data.get("question")
             answer, cost = query_manager.question(quest)
-            saida = answer["result"]
+            saida = answer
             quest = Question.objects.create(
                 topic=the_topic,
                 text=quest,

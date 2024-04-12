@@ -66,6 +66,7 @@ docx2python = "^2.8.0"
 markdown = "^3.5.2"
 celery = {extras = ["redis"], version = "^5.3.5"}
 flower = "^2.0.1"
+langchainhub = "^0.1.15"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"

@@ -1,0 +1,18 @@
+<div class="lg:py-4 w-full mt-4 sm:w-1/2 p-6 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden" id="documents">
+    <h1 class="block text-sm font-bold text-gray-800 dark:text-white">Documento</h1>
+    <p class="block text-sm text-gray-800 dark:text-gray-400">{{ document.base_name }}</p>
+
+    <h1 class="mt-5 block text-sm font-bold text-gray-800 dark:text-white">Resumo</h1>
+    <span class="block text-sm text-gray-800 dark:text-gray-400 leading-relaxed">
+        {% autoescape off %}
+            {{ document.summary }}
+        {% endautoescape %}
+    </span>
+
+    <div class="mt-7 flex gap-6 justify-end">
+        <button type="button" hx-get="{% url 'document' document.topic.id %}" hx-trigger="click" hx-target="#documents" hx-swap="outerHTML"
+                class="py-2 px-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:hover:bg-blue-900 dark:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
+        Ok
+        </button>
+    </div>
+</div>

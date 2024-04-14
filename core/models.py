@@ -109,7 +109,8 @@ class Document(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     base_name = models.CharField(max_length=255, null=True, blank=True)
-    status = models.CharField(max_length=255, default="OK")
+    status = models.CharField(max_length=255, default="--")
+    summary = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ["-id"]

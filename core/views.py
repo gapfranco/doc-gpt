@@ -414,3 +414,12 @@ def send_invite(request, topic_id, invite_id):
     topic_invite.delay(topic_id, invite_sent.email)
     context = _publish_context(request, topic_id)
     return render(request, "partials/publish.html", context)
+
+
+@login_required
+def doc_summary(request, doc_id):
+    doc = Document.objects.get(id=doc_id)
+    context = {
+        "document": doc,
+    }
+    return render(request, "partials/doc_detail.html", context)

@@ -8,6 +8,7 @@ from PyPDF2 import PdfReader
 
 from core.models import DocumentBody
 from core.utils.qdrant_manager import QdrantManager
+from core.utils.qdrant_memory import QdrantMemory
 
 
 @shared_task
@@ -55,11 +56,24 @@ def extract_body(doc_id, topic_id):
         db.add_texts(lin_text)
         doc.delete()
         document.status = "OK"
-        document.save()
-        return "OK"
-    document.status = "ERRO"
+    else:
+        lin_text = ""
+        document.status = "ERRO"
+
+    if lin_text:
+        summary = get_summary(lin_text)
+        document.summary = summary
     document.save()
-    return "ERRO"
+    return document.status
+
+
+def get_summary(lin_text):
+    try:
+        client = QdrantMemory("summary")
+        summary = client.generate_summary(lin_text)
+    except Exception:
+        summary = "Não consegui resumir"
+    return summary
 
 
 def check_text(file):

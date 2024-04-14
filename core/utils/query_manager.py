@@ -38,7 +38,7 @@ class QueryManager:
         pergunta no final. Se não souber a resposta, apenas diga que não sabe,
         não tente fingir uma resposta.
         Use até dez sentenças no máximo e mantenha a resposta o mais detalhada
-        possível na mesma lingua em que a pergunta foi feita.
+        possível. Responder na mesma lingua em que a pergunta foi feita.
 
         {context}
 

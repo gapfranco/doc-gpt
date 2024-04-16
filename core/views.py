@@ -200,7 +200,7 @@ def delete_topic(request, topic_id):
 def _context(request, topic_id):
     the_topic = Topic.objects.get(pk=topic_id)
     documents = Document.objects.filter(topic=the_topic)
-    paginator = Paginator(documents, 8)
+    paginator = Paginator(documents, 6)
     page_doc = request.GET.get("docpage")
     doc_pages = paginator.get_page(page_doc)
     questions = Question.objects.filter(topic=the_topic, user=request.user)
@@ -320,6 +320,12 @@ def new_document(request, topic_id):
     return render(request, "partials/documents.html", context)
 
 
+@login_required
+def list_documents(request, topic_id):
+    context = _context(request, topic_id)
+    return render(request, "partials/list_documents.html", context)
+
+
 def maybe_create_invite(email, topic):
     user = User.objects.filter(email=email).first()
     if user:
@@ -423,3 +429,9 @@ def doc_summary(request, doc_id):
         "document": doc,
     }
     return render(request, "partials/doc_detail.html", context)
+
+
+@login_required
+def doc_status(request, doc_id):
+    doc = Document.objects.get(id=doc_id)
+    return HttpResponse(doc.status)

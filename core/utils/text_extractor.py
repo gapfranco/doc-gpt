@@ -1,4 +1,5 @@
 import io
+import traceback
 
 import magic
 from celery import shared_task
@@ -18,24 +19,27 @@ def extract_body(doc_id, topic_id):
     file_type = doc.type
     file = io.BytesIO(doc.doc)
     text = ""
-    if file_type.startswith("text"):
-        file.seek(0)
-        file_text = file.read()
-        text = file_text.decode()
-    elif file_type == "application/pdf":
-        pdf_reader = PdfReader(file)
-        pages = [page.extract_text() for page in pdf_reader.pages]
-        try:
+    error = ""
+    try:
+        if file_type.startswith("text"):
+            file.seek(0)
+            file_text = file.read()
+            text = file_text.decode()
+        elif file_type == "application/pdf":
+            pdf_reader = PdfReader(file)
+            pages = [page.extract_text() for page in pdf_reader.pages]
             text = "\n\n".join([page for page in pages if page])
-        except Exception:
-            text = ""
-    elif file_type in [
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument."
-        "wordprocessingml.document",
-    ]:
-        docx = docx2python(file)
-        text = docx.text
+        elif file_type in [
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument."
+            "wordprocessingml.document",
+        ]:
+            docx = docx2python(file)
+            text = docx.text
+    except Exception:
+        text = ""
+        error = traceback.format_exc()
+        # error = str(e)
 
     if text:
         qdrant = QdrantManager(topic_id)
@@ -59,10 +63,14 @@ def extract_body(doc_id, topic_id):
     else:
         lin_text = ""
         document.status = "ERRO"
+        if not error:
+            error = "Documento vazio ou danificado"
 
     if lin_text:
         summary = get_summary(lin_text)
         document.summary = summary
+    elif error:
+        document.summary = error
     document.save()
     return document.status
 

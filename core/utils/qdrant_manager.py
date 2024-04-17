@@ -27,7 +27,9 @@ class QdrantManager:
             client.create_collection(
                 collection_name=self.col_name,
                 vectors_config=VectorParams(
-                    size=1536, distance=Distance.COSINE
+                    size=1536,
+                    distance=Distance.COSINE,
+                    on_disk=True,
                 ),
             )
         return Qdrant(

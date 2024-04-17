@@ -41,7 +41,7 @@ class DocumentForm(forms.Form):
 
     def clean_file(self):
         file = self.cleaned_data["file"]
-        max_size = 30
+        max_size = 200
         if file.size > max_size * 1024 * 1024:
             raise forms.ValidationError(
                 f"Arquivo muito grande. Máximo é {max_size}MB"

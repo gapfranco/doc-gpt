@@ -186,11 +186,16 @@ LOGGING = {
 }
 LOGGER = logging.getLogger(__name__)
 
+VECTOR_DB = os.environ.get("VECTOR_DB", "supabase")
+
 QDRANT_PATH = None
 qpath = os.environ.get("QDRANT_PATH")
 if qpath:
     QDRANT_PATH = os.path.join(BASE_DIR, qpath)
 QDRANT_URL = os.environ.get("QDRANT_URL")
 QDRANT_KEY = os.environ.get("QDRANT_KEY")
+
+SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY")
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
 
 LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-3.5-turbo")

@@ -3,8 +3,8 @@ from django.contrib.gis.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
-from core.utils.qdrant_manager import QdrantManager
 from core.utils.text_extractor import extract_body
+from core.utils.vectordb_factory import VectorDBFactory
 
 from .models import DocumentBody, Question, Topic
 
@@ -33,20 +33,20 @@ def post_insert_question(sender, instance, created, **kwargs):
     models.signals.post_save.connect(post_insert_question, sender=sender)
 
 
-@receiver(post_save, sender=Topic)
-def post_insert_topic(sender, instance, created, **kwargs):
-    """Post_save signal from topic inclusion"""
-
-    if not created:
-        return
-
-    models.signals.post_save.disconnect(post_insert_topic, sender=sender)
-
-    # Cria qdrant database
-    qdrant = QdrantManager(str(instance.id))
-    qdrant.get_collection()
-
-    models.signals.post_save.connect(post_insert_topic, sender=sender)
+# @receiver(post_save, sender=Topic)
+# def post_insert_topic(sender, instance, created, **kwargs):
+#     """Post_save signal from topic inclusion"""
+#
+#     if not created:
+#         return
+#
+#     models.signals.post_save.disconnect(post_insert_topic, sender=sender)
+#
+#     # Cria qdrant database
+#     qdrant = QdrantManager(str(instance.id))
+#     qdrant.get_collection()
+#
+#     models.signals.post_save.connect(post_insert_topic, sender=sender)
 
 
 @receiver(pre_delete, sender=Topic)
@@ -54,8 +54,9 @@ def pre_delete_topic(sender, instance, **kwargs):
     models.signals.pre_delete.disconnect(pre_delete_topic, sender=sender)
 
     # Exclui qdrant collection
-    qdrant = QdrantManager(str(instance.id))
-    qdrant.delete_collection()
+    vector_db = VectorDBFactory(instance.vector_db).get_vector_db()
+    vector_db.collection_name(str(instance.id))
+    vector_db.delete_collection()
 
     models.signals.pre_delete.connect(pre_delete_topic, sender=sender)
 
@@ -71,8 +72,12 @@ def post_insert_body(sender, instance, created, **kwargs):
 
     try:
         if instance.doc:
-            extract_body.delay(instance.id, str(instance.document.topic.id))
-            # extract_body(instance.id, str(instance.document.topic.id))
+            # extract_body.delay(instance.id, str(instance.document.topic.id))
+            extract_body(
+                instance.id,
+                str(instance.document.topic.id),
+                instance.document.topic.vector_db,
+            )
 
     finally:
         models.signals.post_save.connect(post_insert_body, sender=sender)

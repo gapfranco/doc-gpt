@@ -8,12 +8,12 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter as Splitter
 from PyPDF2 import PdfReader
 
 from core.models import DocumentBody
-from core.utils.qdrant_manager import QdrantManager
 from core.utils.qdrant_memory import QdrantMemory
+from core.utils.vectordb_factory import VectorDBFactory
 
 
 @shared_task
-def extract_body(doc_id, topic_id):
+def extract_body(doc_id, topic_id, vector_db):
     doc = DocumentBody.objects.get(id=doc_id)
     document = doc.document
     file_type = doc.type
@@ -42,8 +42,10 @@ def extract_body(doc_id, topic_id):
         # error = str(e)
 
     if text:
-        qdrant = QdrantManager(topic_id)
-        db = qdrant.get_collection()
+        # vectorDB = QdrantManager(topic_id)
+        vector_db = VectorDBFactory(vector_db).get_vector_db()
+        vector_db.collection_name(topic_id)
+        db = vector_db.get_collection()
         txt_split = Splitter.from_tiktoken_encoder(
             model_name="text-embedding-ada-002",
             # The appropriate chunk size needs to be adjusted based
@@ -57,7 +59,10 @@ def extract_body(doc_id, topic_id):
             chunk_overlap=0,
         )
         lin_text = txt_split.split_text(text)
-        db.add_texts(lin_text)
+        meta_data = []
+        for _ in lin_text:
+            meta_data.append({"topic": topic_id})
+        db.add_texts(lin_text, meta_data)
         doc.delete()
         document.status = "OK"
     else:

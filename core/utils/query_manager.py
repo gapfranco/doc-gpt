@@ -6,7 +6,7 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI
 
 from aidoc import settings
-from core.utils.qdrant_manager import QdrantManager
+from core.utils.vectordb_factory import VectorDBFactory
 
 
 class QueryManager:
@@ -16,8 +16,9 @@ class QueryManager:
         self.llm = ChatOpenAI(temperature=0, model_name=model_name)
 
     def build_qa_model(self):
-        qdrant = QdrantManager(self.collection_id)
-        client = qdrant.get_collection()
+        vector_db = settings.VECTOR_DB
+        query_manager = VectorDBFactory(vector_db).get_vector_db()
+        client = query_manager.get_collection()
         retriever = client.as_retriever(
             # There are also "mmr," "similarity_score_threshold," and others.
             search_type="similarity",

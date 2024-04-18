@@ -72,12 +72,16 @@ def post_insert_body(sender, instance, created, **kwargs):
 
     try:
         if instance.doc:
-            # extract_body.delay(instance.id, str(instance.document.topic.id))
-            extract_body(
+            extract_body.delay(
                 instance.id,
                 str(instance.document.topic.id),
                 instance.document.topic.vector_db,
             )
+            # extract_body(
+            #     instance.id,
+            #     str(instance.document.topic.id),
+            #     instance.document.topic.vector_db,
+            # )
 
     finally:
         models.signals.post_save.connect(post_insert_body, sender=sender)

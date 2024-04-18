@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -149,14 +150,18 @@ def new_topic(request):
         if form.is_valid():
             name = form.cleaned_data.get("name")
             description = form.cleaned_data.get("description")
-            type = form.cleaned_data.get("type")
+            ttype = form.cleaned_data.get("type")
             user = request.user
+            vector_db = settings.VECTOR_DB
             topic = Topic(
-                name=name, description=description, type=type, user=user
+                name=name,
+                description=description,
+                type=ttype,
+                user=user,
+                vector_db=vector_db,
             )
             topic.save()
             return redirect(f"topic/{topic.id}")
-            # return render(request, "index.html")
     else:
         form = TopicForm()
     return render(request, "new_topic.html", {"form": form, "id": ""})
@@ -396,9 +401,7 @@ def ask(request, topic_id):
 @login_required
 def delete_user_account(request):
     user = request.user
-    # user.is_active = False  # Opção 1: torna o usuário inativo
-    # user.save()
-    user.delete()  # Opção 2: Excluir o usuário diretamente
+    user.delete()
     logout(request)
     return redirect("/")
 

@@ -20,7 +20,7 @@ console_command = '/code/manage.py shell'
 #  destination="/data"
 
 [processes]
-  app = "python -m gunicorn --bind :8000 --workers 2 aidoc.wsgi"
+  app = "python -m gunicorn --bind :8000 --workers 2 --timeout 600 aidoc.wsgi"
   worker = "python -m celery -A aidoc worker -l info"
   flower = "python -m celery -A aidoc flower --address=0.0.0.0 --port=5555 -l info --basic-auth=aidoc:flor@345"
 
@@ -44,7 +44,7 @@ console_command = '/code/manage.py shell'
     port = 5555
 
 [[vm]]
-  memory = '1gb'
+  memory = '2gb'
   cpu_kind = 'shared'
   cpus = 1
 

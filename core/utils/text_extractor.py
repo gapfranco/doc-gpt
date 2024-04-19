@@ -72,7 +72,10 @@ def extract_body(doc_id, topic_id, vector_db):
             error = "Documento vazio ou danificado"
 
     if lin_text:
-        summary = get_summary(lin_text)
+        if len(text) > 10 * 1024 * 1024:
+            summary = "Texto muito grande para sumarizar"
+        else:
+            summary = get_summary(lin_text)
         document.summary = summary
     elif error:
         document.summary = error

@@ -31,4 +31,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 #ENTRYPOINT ["./startup.sh"]
-CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "aidoc.wsgi"]
+CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "--timeout", "600", "aidoc.wsgi"]

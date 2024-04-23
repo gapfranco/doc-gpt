@@ -1,6 +1,6 @@
-# AI-DOC
+# DOC-GPT
 
-AI-DOC, also known as DocGPT, is a web application developed using Django and an artificial intelligence API.
+DOC-GPT is a web application developed using Django and an artificial intelligence API.
 This system allows users to upload their documents and perform queries on these documents
 using advanced natural language processing techniques.
 The system also provides functionalities to selectively share parts of the documents

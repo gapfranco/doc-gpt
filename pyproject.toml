@@ -37,12 +37,12 @@ worker = "celery -A aidoc worker -l info"
 flower = "celery -A aidoc flower --address=0.0.0.0 --port=5555 --loglevel=info"
 
 [tool.poetry]
-name = "ai-doc"
+name = "doc-gpt"
 version = "0.1.0"
 description = ""
 authors = ["Gonçalo Franco <gapfranco@gmail.com>"]
 readme = "README.md"
-packages = [{include = "ai_doc"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.12"

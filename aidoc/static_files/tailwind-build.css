@@ -859,6 +859,10 @@ select {
   margin-left: 1rem;
 }
 
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
 .ms-3 {
   -webkit-margin-start: 0.75rem;
           margin-inline-start: 0.75rem;
@@ -899,10 +903,6 @@ select {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.mr-1 {
-  margin-right: 0.25rem;
 }
 
 .block {
@@ -1121,10 +1121,6 @@ select {
 
 .list-decimal {
   list-style-type: decimal;
-}
-
-.flex-row {
-  flex-direction: row;
 }
 
 .flex-col {
@@ -1479,11 +1475,6 @@ select {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-
-.px-5 {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
 }
 
 .pb-2 {

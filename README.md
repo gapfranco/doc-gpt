@@ -1,4 +1,4 @@
-# AI-DOC PROJECT
+# AI-DOC
 
 AI-DOC, also known as DocGPT, is a web application developed using Django and an artificial intelligence API.
 This system allows users to upload their documents and perform queries on these documents

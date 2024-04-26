@@ -168,6 +168,11 @@ REDIS_URL = os.getenv("REDIS_URL")
 CELERY_BROKER_URL = f"{REDIS_URL}/0"
 CELERY_TIMEZONE = "America/Sao_Paulo"
 CELERY_TASK_SERIALIZER = "pickle"
+CELERY_ON = os.getenv("CELERY_ON", "True") in {
+    "True",
+    "true",
+    "1",
+}
 
 LOGGING = {
     "version": 1,
@@ -186,6 +191,7 @@ LOGGING = {
 }
 LOGGER = logging.getLogger(__name__)
 
+LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-3.5-turbo")
 VECTOR_DB = os.environ.get("VECTOR_DB", "supabase")
 
 QDRANT_PATH = None
@@ -197,5 +203,3 @@ QDRANT_KEY = os.environ.get("QDRANT_KEY")
 
 SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY")
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
-
-LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-3.5-turbo")

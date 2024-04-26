@@ -9,6 +9,7 @@ from core.utils.vectordb_factory import VectorDBFactory
 from .models import DocumentBody, Question, Topic
 
 logger = settings.LOGGER
+celey_on = settings.CELERY_ON
 
 
 @receiver(post_save, sender=Question)
@@ -72,16 +73,18 @@ def post_insert_body(sender, instance, created, **kwargs):
 
     try:
         if instance.doc:
-            extract_body.delay(
-                instance.id,
-                str(instance.document.topic.id),
-                instance.document.topic.vector_db,
-            )
-            # extract_body(
-            #     instance.id,
-            #     str(instance.document.topic.id),
-            #     instance.document.topic.vector_db,
-            # )
+            if celey_on:
+                extract_body.delay(
+                    instance.id,
+                    str(instance.document.topic.id),
+                    instance.document.topic.vector_db,
+                )
+            else:
+                extract_body(
+                    instance.id,
+                    str(instance.document.topic.id),
+                    instance.document.topic.vector_db,
+                )
 
     finally:
         models.signals.post_save.connect(post_insert_body, sender=sender)
